@@ -119,29 +119,10 @@ y = 1  # x = 3
 # 3 / 2 + 21
 """))))
 
-
-@contextlib.contextmanager
-def temporary_file(contents, directory='.'):
-    """Write contents to temporary file and yield it."""
-    f = tempfile.NamedTemporaryFile(suffix='.py', delete=False, dir=directory)
-    try:
-        f.write(contents.encode('utf8'))
-        f.close()
-        yield f.name
-    finally:
-        import os
-        os.remove(f.name)
-
-
-@contextlib.contextmanager
-def temporary_directory(directory='.'):
-    """Create temporary directory and yield its path."""
-    temp_directory = tempfile.mkdtemp(dir=directory)
-    try:
-        yield temp_directory
-    finally:
-        import shutil
-        shutil.rmtree(temp_directory)
+    def test_detect_encoding_with_bad_encoding(self):
+        with temporary_file('# -*- coding: blah -*-\n') as filename:
+            self.assertEqual('latin-1',
+                             eradicate.detect_encoding(filename))
 
 
 class SystemTests(unittest.TestCase):
@@ -205,6 +186,30 @@ class SystemTests(unittest.TestCase):
 -# x * 3 == False
  # x is a variable
 """, '\n'.join(process.communicate()[0].decode('utf-8').split('\n')[2:]))
+
+
+@contextlib.contextmanager
+def temporary_file(contents, directory='.'):
+    """Write contents to temporary file and yield it."""
+    f = tempfile.NamedTemporaryFile(suffix='.py', delete=False, dir=directory)
+    try:
+        f.write(contents.encode('utf8'))
+        f.close()
+        yield f.name
+    finally:
+        import os
+        os.remove(f.name)
+
+
+@contextlib.contextmanager
+def temporary_directory(directory='.'):
+    """Create temporary directory and yield its path."""
+    temp_directory = tempfile.mkdtemp(dir=directory)
+    try:
+        yield temp_directory
+    finally:
+        import shutil
+        shutil.rmtree(temp_directory)
 
 
 if __name__ == '__main__':
