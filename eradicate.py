@@ -31,7 +31,6 @@ def comment_contains_code(line):
 def commented_out_code_line_numbers(source):
     """Yield line numbers of commented-out code."""
     sio = StringIO(source)
-    formatted = ''
     for token in tokenize.generate_tokens(sio.readline):
         token_type = token[0]
         start_row = token[2][0]
@@ -39,8 +38,6 @@ def commented_out_code_line_numbers(source):
 
         if token_type == tokenize.COMMENT and comment_contains_code(line):
             yield start_row
-
-    return formatted
 
 
 def filter_commented_out_code(source):
@@ -78,7 +75,7 @@ def detect_encoding(filename):
 def main(argv, standard_out):
     """Main entry point."""
     import argparse
-    parser = argparse.ArgumentParser(description=__doc__, prog='docformatter')
+    parser = argparse.ArgumentParser(description=__doc__, prog='eradicate')
     parser.add_argument('--in-place', '-i', action='store_true',
                         help='make changes to files instead of printing diffs')
     parser.add_argument('--version', action='version', version=__version__)

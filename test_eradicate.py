@@ -51,7 +51,7 @@ y = 1
 
     def test_filter_commented_out_code(self):
         self.assertEqual(
-                """\
+            """\
 # This is a comment.
 
 y = 1
