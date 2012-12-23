@@ -50,7 +50,9 @@ def commented_out_code_line_numbers(source):
             start_row = token[2][0]
             line = token[4]
 
-            if token_type == tokenize.COMMENT and comment_contains_code(line):
+            if (token_type == tokenize.COMMENT and
+                    comment_contains_code(line) and
+                    line.lstrip().startswith('#')):
                 yield start_row
     except (tokenize.TokenError, IndentationError):
         pass
