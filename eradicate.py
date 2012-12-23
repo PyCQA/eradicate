@@ -27,8 +27,9 @@ def comment_contains_code(line):
         return False
 
     # Handle multi-line cases manually.
-    if line.endswith('):') or line.endswith('else:'):
-        return True
+    for ending in ['):', 'else:', 'try:']:
+        if line.endswith(ending):
+            return True
 
     # Make compatible with Python 2 and 3.
     line = re.sub(r'print\b\s*', '', line)
