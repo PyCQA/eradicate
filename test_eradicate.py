@@ -246,7 +246,7 @@ def temporary_directory(directory='.', prefix=''):
 
 class StubFile(object):
 
-    """Fake file that ignore everything."""
+    """Fake file that ignores everything."""
 
     def write(*_):
         """Ignore."""
