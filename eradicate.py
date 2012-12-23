@@ -1,7 +1,10 @@
 """Removes commented-out Python code."""
 
+from __future__ import print_function
+
 from io import StringIO
 import os
+import sys
 import re
 import tokenize
 
@@ -61,6 +64,29 @@ def filter_commented_out_code(source):
             yield line
 
 
+def fix_file(filename, args, standard_out):
+    """Run filter_commented_out_code() on file."""
+    encoding = detect_encoding(filename)
+    with open_with_encoding(filename, encoding=encoding) as input_file:
+        source = input_file.read()
+
+    filtered_source = ''.join(filter_commented_out_code(source))
+
+    if source != filtered_source:
+        if args.in_place:
+            with open_with_encoding(filename, mode='w',
+                                    encoding=encoding) as output_file:
+                output_file.write(filtered_source)
+        else:
+            import difflib
+            diff = difflib.unified_diff(
+                StringIO(source).readlines(),
+                StringIO(filtered_source).readlines(),
+                'before/' + filename,
+                'after/' + filename)
+            standard_out.write(''.join(diff))
+
+
 def open_with_encoding(filename, encoding, mode='r'):
     """Return opened file with a specific encoding."""
     import io
@@ -109,21 +135,7 @@ def main(argv, standard_out):
                     if d.startswith('.'):
                         directories.remove(d)
         else:
-            encoding = detect_encoding(name)
-            with open_with_encoding(name, encoding=encoding) as input_file:
-                source = input_file.read()
-                filtered_source = ''.join(filter_commented_out_code(source))
-
-            if source != filtered_source:
-                if args.in_place:
-                    with open_with_encoding(name, mode='w',
-                                            encoding=encoding) as output_file:
-                        output_file.write(filtered_source)
-                else:
-                    import difflib
-                    diff = difflib.unified_diff(
-                        StringIO(source).readlines(),
-                        StringIO(filtered_source).readlines(),
-                        'before/' + name,
-                        'after/' + name)
-                    standard_out.write(''.join(diff))
+            try:
+                fix_file(name, args=args, standard_out=standard_out)
+            except IOError as exception:
+                print(exception, file=sys.stderr)
