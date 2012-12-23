@@ -1,4 +1,4 @@
-"""Remove commented out Python code."""
+"""Removes commented-out Python code."""
 
 from io import StringIO
 import os
