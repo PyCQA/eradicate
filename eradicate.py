@@ -141,4 +141,3 @@ def main(argv, standard_out, standard_error):
                 fix_file(name, args=args, standard_out=standard_out)
             except IOError as exception:
                 print(exception, file=standard_error)
-                return 2
