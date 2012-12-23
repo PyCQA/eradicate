@@ -4,19 +4,22 @@ from io import StringIO
 import re
 import tokenize
 
-
-def normalize_line(line):
-    """Normalize before checking for code."""
-    line = line.lstrip(' \t\v\n#').strip()
-
-    return re.sub(r'print\b\s*', '', line)
+__version__ = '0.0.1'
 
 
 def comment_contains_code(line):
     """Return True comment contains code."""
-    line = normalize_line(line)
-    if not line:
+    line = line.lstrip(' \t\v\n#').strip()
+
+    # Confirm that there is more than one word.
+    for symbol in '\t ()[]{}':
+        if symbol in line:
+            break
+    else:
         return False
+
+    # Make compatible with Python 2 and 3.
+    line = re.sub(r'print\b\s*', '', line)
 
     try:
         compile(line, '<string>', 'exec')
@@ -70,3 +73,35 @@ def detect_encoding(filename):
         return encoding
     except (SyntaxError, LookupError, UnicodeDecodeError):
         return 'latin-1'
+
+
+def main(argv, standard_out):
+    """Main entry point."""
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__, prog='docformatter')
+    parser.add_argument('--in-place', '-i', action='store_true',
+                        help='make changes to files instead of printing diffs')
+    parser.add_argument('--version', action='version', version=__version__)
+    parser.add_argument('files', nargs='+', help='files to format')
+
+    args = parser.parse_args(argv[1:])
+
+    for filename in args.files:
+        encoding = detect_encoding(filename)
+        with open_with_encoding(filename, encoding=encoding) as input_file:
+            source = input_file.read()
+            filtered_source = ''.join(filter_commented_out_code(source))
+
+        if source != filtered_source:
+            if args.in_place:
+                with open_with_encoding(filename, mode='w',
+                                        encoding=encoding) as output_file:
+                    output_file.write(filtered_source)
+            else:
+                import difflib
+                diff = difflib.unified_diff(
+                    StringIO(source).readlines(),
+                    StringIO(filtered_source).readlines(),
+                    'before/' + filename,
+                    'after/' + filename)
+                standard_out.write(''.join(diff))
