@@ -35,13 +35,16 @@ def comment_contains_code(line):
 def commented_out_code_line_numbers(source):
     """Yield line numbers of commented-out code."""
     sio = StringIO(source)
-    for token in tokenize.generate_tokens(sio.readline):
-        token_type = token[0]
-        start_row = token[2][0]
-        line = token[4]
+    try:
+        for token in tokenize.generate_tokens(sio.readline):
+            token_type = token[0]
+            start_row = token[2][0]
+            line = token[4]
 
-        if token_type == tokenize.COMMENT and comment_contains_code(line):
-            yield start_row
+            if token_type == tokenize.COMMENT and comment_contains_code(line):
+                yield start_row
+    except (tokenize.TokenError, IndentationError):
+        pass
 
 
 def filter_commented_out_code(source):

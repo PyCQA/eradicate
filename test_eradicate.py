@@ -58,6 +58,24 @@ y = 1  # x = 3
 # 3 / 2 + 21
 """))))
 
+    def test_commented_out_code_line_numbers_with_errors(self):
+        self.assertEqual(
+            [1, 3, 8],
+            list(eradicate.commented_out_code_line_numbers(
+                unicode("""\
+# print(5)
+# This is a comment.
+# x = 1
+
+y = 1  # x = 3
+
+# Another comment.
+# 3 / 2 + 21
+def foo():
+        1
+    2
+"""))))
+
     def test_filter_commented_out_code(self):
         self.assertEqual(
             """\
