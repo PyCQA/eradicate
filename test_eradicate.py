@@ -34,7 +34,7 @@ class UnitTests(unittest.TestCase):
             '# x = 1'))
 
     def test_comment_contains_code_with_print(self):
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.comment_contains_code(
             '#print'))
 
         self.assertTrue(eradicate.comment_contains_code(
@@ -42,6 +42,16 @@ class UnitTests(unittest.TestCase):
 
         self.assertTrue(eradicate.comment_contains_code(
             '#print 1'))
+
+    def test_comment_contains_code_with_multi_line(self):
+        self.assertTrue(eradicate.comment_contains_code(
+            '#def foo():'))
+
+        self.assertTrue(eradicate.comment_contains_code(
+            '#else:'))
+
+        self.assertFalse(eradicate.comment_contains_code(
+            '#else'))
 
     def test_commented_out_code_line_numbers(self):
         self.assertEqual(

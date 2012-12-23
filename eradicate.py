@@ -16,12 +16,16 @@ def comment_contains_code(line):
 
     line = line.lstrip(' \t\v\n#').strip()
 
-    # Confirm that there is more than one word.
-    for symbol in '\t ()[]{}':
+    # Check that this is possibly code.
+    for symbol in list('()[]{}.,:=+-*/') + ['print']:
         if symbol in line:
             break
     else:
         return False
+
+    # Handle multi-line cases manually.
+    if line.endswith('):') or line.endswith('else:'):
+        return True
 
     # Make compatible with Python 2 and 3.
     line = re.sub(r'print\b\s*', '', line)
