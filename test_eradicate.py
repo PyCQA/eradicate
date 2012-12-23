@@ -9,6 +9,12 @@ import unittest
 import eradicate
 
 
+try:
+    unicode
+except NameError:
+    unicode = str
+
+
 class UnitTests(unittest.TestCase):
 
     def test_comment_contains_code(self):
@@ -38,7 +44,7 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(
             [1, 3, 8],
             list(eradicate.commented_out_code_line_numbers(
-                """\
+                unicode("""\
 # print(5)
 # This is a comment.
 # x = 1
@@ -47,7 +53,7 @@ y = 1
 
 # Another comment.
 # 3 / 2 + 21
-""")))
+"""))))
 
     def test_filter_commented_out_code(self):
         self.assertEqual(
@@ -59,7 +65,7 @@ y = 1
 # Another comment.
 """,
             ''.join(eradicate.filter_commented_out_code(
-                """\
+                unicode("""\
 # print(5)
 # This is a comment.
 # x = 1
@@ -68,7 +74,7 @@ y = 1
 
 # Another comment.
 # 3 / 2 + 21
-""")))
+"""))))
 
 
 @contextlib.contextmanager
