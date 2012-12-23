@@ -9,7 +9,7 @@ eradicate
 *eradicate* removes commented-out code from Python files.
 
 With modern revision control available there is no reason to save junk
-comments to the repository. eradicate helps cleans things up existing junk.
+comments to the repository. eradicate helps cleans up existing junk.
 
 -------
 Example
