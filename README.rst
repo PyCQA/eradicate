@@ -29,7 +29,7 @@ Before::
        #print('hello')
        print(x, y, z)
 
-after::
+After::
 
    a = 4
 
