@@ -134,7 +134,8 @@ class SystemTests(unittest.TestCase):
 """) as filename:
             output_file = StringIO()
             eradicate.main(argv=['my_fake_program', filename],
-                           standard_out=output_file)
+                           standard_out=output_file,
+                           standard_error=None)
             self.assertEqual("""\
 @@ -1,2 +1 @@
 -# x * 3 == False
@@ -153,12 +154,33 @@ class SystemTests(unittest.TestCase):
                 eradicate.main(argv=['my_fake_program',
                                      '--recursive',
                                      directory],
-                               standard_out=output_file)
+                               standard_out=output_file,
+                               standard_error=None)
                 self.assertEqual("""\
 @@ -1,2 +1 @@
 -# x * 3 == False
  # x is a variable
 """, '\n'.join(output_file.getvalue().split('\n')[2:]))
+
+    def test_ignore_hidden_directories(self):
+        with temporary_directory() as directory:
+            with temporary_directory(prefix='.',
+                                     directory=directory) as inner_directory:
+
+                with temporary_file("""\
+# x * 3 == False
+# x is a variable
+""", directory=inner_directory):
+
+                    output_file = StringIO()
+                    eradicate.main(argv=['my_fake_program',
+                                         '--recursive',
+                                         directory],
+                                   standard_out=output_file,
+                                   standard_error=None)
+                    self.assertEqual(
+                        '',
+                        output_file.getvalue().strip())
 
     def test_in_place(self):
         with temporary_file("""\
@@ -167,11 +189,22 @@ class SystemTests(unittest.TestCase):
 """) as filename:
             output_file = StringIO()
             eradicate.main(argv=['my_fake_program', '--in-place', filename],
-                           standard_out=output_file)
+                           standard_out=output_file,
+                           standard_error=None)
             with open(filename) as f:
                 self.assertEqual("""\
 # x is a variable
 """, f.read())
+
+    def test_with_missing_file(self):
+        output_file = StringIO()
+        error_file = StringIO()
+        self.assertEqual(
+            2,
+            eradicate.main(argv=['my_fake_program', '--in-place', '.fake'],
+                           standard_out=output_file,
+                           standard_error=error_file))
+        self.assertIn('.fake', error_file.getvalue())
 
     def test_end_to_end(self):
         with temporary_file("""\
@@ -189,9 +222,10 @@ class SystemTests(unittest.TestCase):
 
 
 @contextlib.contextmanager
-def temporary_file(contents, directory='.'):
+def temporary_file(contents, directory='.', prefix=''):
     """Write contents to temporary file and yield it."""
-    f = tempfile.NamedTemporaryFile(suffix='.py', delete=False, dir=directory)
+    f = tempfile.NamedTemporaryFile(suffix='.py', prefix=prefix,
+                                    delete=False, dir=directory)
     try:
         f.write(contents.encode('utf8'))
         f.close()
@@ -202,9 +236,9 @@ def temporary_file(contents, directory='.'):
 
 
 @contextlib.contextmanager
-def temporary_directory(directory='.'):
+def temporary_directory(directory='.', prefix=''):
     """Create temporary directory and yield its path."""
-    temp_directory = tempfile.mkdtemp(dir=directory)
+    temp_directory = tempfile.mkdtemp(prefix=prefix, dir=directory)
     try:
         yield temp_directory
     finally:

@@ -28,6 +28,8 @@ import eradicate
 
 if __name__ == '__main__':
     try:
-        sys.exit(eradicate.main(sys.argv, standard_out=sys.stdout))
+        sys.exit(eradicate.main(sys.argv,
+                                standard_out=sys.stdout,
+                                standard_error=sys.stderr))
     except KeyboardInterrupt:
         sys.exit(2)
