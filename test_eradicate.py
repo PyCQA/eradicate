@@ -4,6 +4,7 @@
 
 import contextlib
 from io import StringIO
+import tempfile
 import unittest
 
 import eradicate
@@ -120,10 +121,9 @@ y = 1  # x = 3
 
 
 @contextlib.contextmanager
-def temporary_file(contents):
+def temporary_file(contents, directory='.'):
     """Write contents to temporary file and yield it."""
-    import tempfile
-    f = tempfile.NamedTemporaryFile(suffix='.py', delete=False, dir='.')
+    f = tempfile.NamedTemporaryFile(suffix='.py', delete=False, dir=directory)
     try:
         f.write(contents.encode('utf8'))
         f.close()
@@ -131,6 +131,17 @@ def temporary_file(contents):
     finally:
         import os
         os.remove(f.name)
+
+
+@contextlib.contextmanager
+def temporary_directory(directory='.'):
+    """Create temporary directory and yield its path."""
+    temp_directory = tempfile.mkdtemp(dir=directory)
+    try:
+        yield temp_directory
+    finally:
+        import shutil
+        shutil.rmtree(temp_directory)
 
 
 class SystemTests(unittest.TestCase):
@@ -144,6 +155,25 @@ class SystemTests(unittest.TestCase):
             eradicate.main(argv=['my_fake_program', filename],
                            standard_out=output_file)
             self.assertEqual("""\
+@@ -1,2 +1 @@
+-# x * 3 == False
+ # x is a variable
+""", '\n'.join(output_file.getvalue().split('\n')[2:]))
+
+    def test_recursive(self):
+        with temporary_directory() as directory:
+
+            with temporary_file("""\
+# x * 3 == False
+# x is a variable
+""", directory=directory):
+
+                output_file = StringIO()
+                eradicate.main(argv=['my_fake_program',
+                                     '--recursive',
+                                     directory],
+                               standard_out=output_file)
+                self.assertEqual("""\
 @@ -1,2 +1 @@
 -# x * 3 == False
  # x is a variable
