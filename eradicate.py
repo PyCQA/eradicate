@@ -4,7 +4,6 @@ from __future__ import print_function
 
 from io import StringIO
 import os
-import sys
 import re
 import tokenize
 
