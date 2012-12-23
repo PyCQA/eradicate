@@ -9,6 +9,10 @@ __version__ = '0.0.1'
 
 def comment_contains_code(line):
     """Return True comment contains code."""
+    line = line.lstrip()
+    if not line.startswith('#'):
+        return False
+
     line = line.lstrip(' \t\v\n#').strip()
 
     # Confirm that there is more than one word.

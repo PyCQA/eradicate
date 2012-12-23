@@ -27,18 +27,21 @@ class UnitTests(unittest.TestCase):
         self.assertFalse(eradicate.comment_contains_code(
             '# 123'))
 
+        self.assertFalse(eradicate.comment_contains_code(
+            'x = 1  # x = 1'))
+
         self.assertTrue(eradicate.comment_contains_code(
             '# x = 1'))
 
     def test_comment_contains_code_with_print(self):
         self.assertFalse(eradicate.comment_contains_code(
-            'print'))
+            '#print'))
 
         self.assertTrue(eradicate.comment_contains_code(
-            'print(1)'))
+            '#print(1)'))
 
         self.assertTrue(eradicate.comment_contains_code(
-            'print 1'))
+            '#print 1'))
 
     def test_commented_out_code_line_numbers(self):
         self.assertEqual(
@@ -49,7 +52,7 @@ class UnitTests(unittest.TestCase):
 # This is a comment.
 # x = 1
 
-y = 1
+y = 1  # x = 3
 
 # Another comment.
 # 3 / 2 + 21
@@ -60,7 +63,7 @@ y = 1
             """\
 # This is a comment.
 
-y = 1
+y = 1  # x = 3
 
 # Another comment.
 """,
@@ -70,7 +73,7 @@ y = 1
 # This is a comment.
 # x = 1
 
-y = 1
+y = 1  # x = 3
 
 # Another comment.
 # 3 / 2 + 21
