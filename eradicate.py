@@ -1,6 +1,7 @@
 """Remove commented out Python code."""
 
 from io import StringIO
+import os
 import re
 import tokenize
 
@@ -85,27 +86,39 @@ def main(argv, standard_out):
     parser = argparse.ArgumentParser(description=__doc__, prog='eradicate')
     parser.add_argument('--in-place', '-i', action='store_true',
                         help='make changes to files instead of printing diffs')
+    parser.add_argument('-r', '--recursive', action='store_true',
+                        help='drill down directories recursively')
     parser.add_argument('--version', action='version', version=__version__)
     parser.add_argument('files', nargs='+', help='files to format')
 
     args = parser.parse_args(argv[1:])
 
-    for filename in args.files:
-        encoding = detect_encoding(filename)
-        with open_with_encoding(filename, encoding=encoding) as input_file:
-            source = input_file.read()
-            filtered_source = ''.join(filter_commented_out_code(source))
+    filenames = list(set(args.files))
+    while filenames:
+        name = filenames.pop(0)
+        if args.recursive and os.path.isdir(name):
+            for root, directories, children in os.walk(name):
+                filenames += [os.path.join(root, f) for f in children
+                              if not f.startswith('.')]
+                for d in directories:
+                    if d.startswith('.'):
+                        directories.remove(d)
+        else:
+            encoding = detect_encoding(name)
+            with open_with_encoding(name, encoding=encoding) as input_file:
+                source = input_file.read()
+                filtered_source = ''.join(filter_commented_out_code(source))
 
-        if source != filtered_source:
-            if args.in_place:
-                with open_with_encoding(filename, mode='w',
-                                        encoding=encoding) as output_file:
-                    output_file.write(filtered_source)
-            else:
-                import difflib
-                diff = difflib.unified_diff(
-                    StringIO(source).readlines(),
-                    StringIO(filtered_source).readlines(),
-                    'before/' + filename,
-                    'after/' + filename)
-                standard_out.write(''.join(diff))
+            if source != filtered_source:
+                if args.in_place:
+                    with open_with_encoding(name, mode='w',
+                                            encoding=encoding) as output_file:
+                        output_file.write(filtered_source)
+                else:
+                    import difflib
+                    diff = difflib.unified_diff(
+                        StringIO(source).readlines(),
+                        StringIO(filtered_source).readlines(),
+                        'before/' + name,
+                        'after/' + name)
+                    standard_out.write(''.join(diff))

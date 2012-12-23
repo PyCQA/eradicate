@@ -20,9 +20,16 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """eradicate utility."""
 
+from __future__ import print_function
+
 import sys
 import eradicate
 
 
 if __name__ == '__main__':
-    sys.exit(eradicate.main(sys.argv, standard_out=sys.stdout))
+    try:
+        sys.exit(eradicate.main(sys.argv, standard_out=sys.stdout))
+    except KeyboardInterrupt:
+        sys.exit(2)
+    except IOError as exception:
+        print(exception, file=sys.stderr)
