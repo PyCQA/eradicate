@@ -19,7 +19,7 @@ def comment_contains_code(line):
     line = line.lstrip(' \t\v\n#').strip()
 
     # Check that this is possibly code.
-    for symbol in list('()[]{}:=') + ['print']:
+    for symbol in list('()[]{}:=') + ['print', 'return', 'break', 'continue']:
         if symbol in line:
             break
     else:
@@ -32,6 +32,8 @@ def comment_contains_code(line):
 
     # Make compatible with Python 2 and 3.
     line = re.sub(r'print\b\s*', '', line)
+
+    line = re.sub(r'return\b\s*', '', line)
 
     try:
         compile(line, '<string>', 'exec')
