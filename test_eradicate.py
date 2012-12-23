@@ -22,7 +22,7 @@ class UnitTests(unittest.TestCase):
             '#'))
 
         self.assertFalse(eradicate.comment_contains_code(
-            '# This is a real comment.'))
+            '# This is a (real) comment.'))
 
         self.assertFalse(eradicate.comment_contains_code(
             '# 123'))
