@@ -198,13 +198,11 @@ class SystemTests(unittest.TestCase):
 
     def test_with_missing_file(self):
         output_file = StringIO()
-        error_file = StringIO()
-        self.assertEqual(
-            2,
-            eradicate.main(argv=['my_fake_program', '--in-place', '.fake'],
-                           standard_out=output_file,
-                           standard_error=error_file))
-        self.assertIn('.fake', error_file.getvalue())
+        ignore = StubFile()
+        eradicate.main(argv=['my_fake_program', '--in-place', '.fake'],
+                       standard_out=output_file,
+                       standard_error=ignore)
+        self.assertFalse(output_file.getvalue())
 
     def test_end_to_end(self):
         with temporary_file("""\
@@ -244,6 +242,15 @@ def temporary_directory(directory='.', prefix=''):
     finally:
         import shutil
         shutil.rmtree(temp_directory)
+
+
+class StubFile(object):
+
+    """Fake file that ignore everything."""
+
+    def write(*_):
+        """Ignore."""
+        pass
 
 
 if __name__ == '__main__':
