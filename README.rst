@@ -13,8 +13,8 @@ Introduction
 ------------
 
 With modern revision control available there is no reason to save junk
-comments to the repository. eradicate helps cleans up existing junk. It
-does this by first tokenizing the code to find the comments. It then
+comments to your repository. *eradicate* helps cleans up existing junk.
+It does this by first tokenizing the code to find the comments. It then
 removes the block comments that both contain valid Python syntax and
 have symbols unlikely to be real comment.
 
