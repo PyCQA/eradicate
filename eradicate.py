@@ -113,7 +113,7 @@ def detect_encoding(filename):
         return 'latin-1'
 
 
-def main(argv, standard_out):
+def main(argv, standard_out, standard_error):
     """Main entry point."""
     import argparse
     parser = argparse.ArgumentParser(description=__doc__, prog='eradicate')
@@ -141,4 +141,5 @@ def main(argv, standard_out):
             try:
                 fix_file(name, args=args, standard_out=standard_out)
             except IOError as exception:
-                print(exception, file=sys.stderr)
+                print(exception, file=standard_error)
+                return 2
