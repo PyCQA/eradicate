@@ -28,6 +28,12 @@ class UnitTests(unittest.TestCase):
             '# 123'))
 
         self.assertFalse(eradicate.comment_contains_code(
+            '# 123.1'))
+
+        self.assertFalse(eradicate.comment_contains_code(
+            '# 1, 2, 3'))
+
+        self.assertFalse(eradicate.comment_contains_code(
             'x = 1  # x = 1'))
 
         self.assertTrue(eradicate.comment_contains_code(
@@ -53,9 +59,13 @@ class UnitTests(unittest.TestCase):
         self.assertFalse(eradicate.comment_contains_code(
             '#else'))
 
+    def test_comment_contains_code_with_sentences(self):
+        self.assertFalse(eradicate.comment_contains_code(
+            '#code is good'))
+
     def test_commented_out_code_line_numbers(self):
         self.assertEqual(
-            [1, 3, 8],
+            [1, 3],
             list(eradicate.commented_out_code_line_numbers(
                 unicode("""\
 # print(5)
@@ -64,13 +74,13 @@ class UnitTests(unittest.TestCase):
 
 y = 1  # x = 3
 
-# Another comment.
+# The below is another comment.
 # 3 / 2 + 21
 """))))
 
     def test_commented_out_code_line_numbers_with_errors(self):
         self.assertEqual(
-            [1, 3, 8],
+            [1, 3],
             list(eradicate.commented_out_code_line_numbers(
                 unicode("""\
 # print(5)
@@ -79,7 +89,7 @@ y = 1  # x = 3
 
 y = 1  # x = 3
 
-# Another comment.
+# The below is another comment.
 # 3 / 2 + 21
 def foo():
         1
@@ -93,7 +103,8 @@ def foo():
 
 y = 1  # x = 3
 
-# Another comment.
+# The below is another comment.
+# 3 / 2 + 21
 """,
             ''.join(eradicate.filter_commented_out_code(
                 unicode("""\
@@ -103,7 +114,7 @@ y = 1  # x = 3
 
 y = 1  # x = 3
 
-# Another comment.
+# The below is another comment.
 # 3 / 2 + 21
 """))))
 

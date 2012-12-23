@@ -20,7 +20,7 @@ def comment_contains_code(line):
     line = line.lstrip(' \t\v\n#').strip()
 
     # Check that this is possibly code.
-    for symbol in list('()[]{}.,:=+-*/') + ['print']:
+    for symbol in list('()[]{}:=') + ['print']:
         if symbol in line:
             break
     else:
