@@ -50,6 +50,10 @@ class UnitTests(unittest.TestCase):
         self.assertTrue(eradicate.comment_contains_code(
             '#print 1'))
 
+    def test_comment_contains_code_with_return(self):
+        self.assertTrue(eradicate.comment_contains_code(
+            '#return x'))
+
     def test_comment_contains_code_with_multi_line(self):
         self.assertTrue(eradicate.comment_contains_code(
             '#def foo():'))
