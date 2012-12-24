@@ -121,6 +121,32 @@ y = 1  # x = 3
 
 # The below is another comment.
 # 3 / 2 + 21
+# try:
+#     x = 1
+# finally:
+#     x = 0
+"""))))
+
+    def test_filter_commented_out_code_with_larger_example(self):
+        self.assertEqual(
+            """\
+# This is a comment.
+
+y = 1  # x = 3
+
+# The below is another comment.
+# 3 / 2 + 21
+""",
+            ''.join(eradicate.filter_commented_out_code(
+                unicode("""\
+# print(5)
+# This is a comment.
+# x = 1
+
+y = 1  # x = 3
+
+# The below is another comment.
+# 3 / 2 + 21
 """))))
 
     def test_detect_encoding_with_bad_encoding(self):
