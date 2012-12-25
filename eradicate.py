@@ -32,7 +32,7 @@ def comment_contains_code(line):
             return True
 
     for symbol in ['else', 'try', 'finally']:
-        if re.match(r'^\s*' + symbol + '\s*:\s*$', line):
+        if re.match(r'^\s*' + symbol + r'\s*:\s*$', line):
             return True
 
     for remove_beginning in ['print', 'return']:
@@ -121,7 +121,7 @@ def main(argv, standard_out, standard_error):
     """Main entry point."""
     import argparse
     parser = argparse.ArgumentParser(description=__doc__, prog='eradicate')
-    parser.add_argument('-i','--in-place',  action='store_true',
+    parser.add_argument('-i', '--in-place', action='store_true',
                         help='make changes to files instead of printing diffs')
     parser.add_argument('-r', '--recursive', action='store_true',
                         help='drill down directories recursively')
