@@ -17,7 +17,7 @@ commented-out code to your repository. *eradicate* helps cleans up
 existing junk comments. It does this by detecting block comments that
 contain valid Python syntax that are likely to be commented out code.
 (It avoids false positives like the sentence ``this is not good``,
-which is valid Python syntax, but probably is not code.)
+which is valid Python syntax, but is probably not code.)
 
 -------
 Example
