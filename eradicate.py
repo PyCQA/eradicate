@@ -27,14 +27,16 @@ def comment_contains_code(line):
         return False
 
     # Handle multi-line cases manually.
-    for ending in list(')]}') + ['else', 'try', 'finally']:
+    for ending in ')]}':
         if line.endswith(ending + ':'):
             return True
 
-    # Make compatible with Python 2 and 3.
-    line = re.sub(r'print\b\s*', '', line)
+    for symbol in ['else', 'try', 'finally']:
+        if re.match(r'^\s*' + symbol + '\s*:\s*$', line):
+            return True
 
-    line = re.sub(r'return\b\s*', '', line)
+    for remove_beginning in ['print', 'return']:
+        line = re.sub('^' + remove_beginning + r'\b\s*', '', line)
 
     try:
         compile(line, '<string>', 'exec')
