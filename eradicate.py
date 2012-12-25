@@ -26,7 +26,7 @@ def comment_contains_code(line):
         return False
 
     # Handle multi-line cases manually.
-    for ending in list(')]}') + ['else', 'try', 'finally']:
+    for ending in list(')]}') + ['else', 'try', 'finally', 'import']:
         if line.endswith(ending + ':'):
             return True
 
