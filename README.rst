@@ -12,11 +12,12 @@ eradicate
 Introduction
 ------------
 
-With modern revision control available there is no reason to save junk
-comments to your repository. *eradicate* helps cleans up existing junk.
-It does this by first tokenizing the code to find the comments. It then
-removes the block comments that both contain valid Python syntax and
-have symbols unlikely to be real comment.
+With modern revision control available, there is no reason to save
+commented-out code to your repository. *eradicate* helps cleans up
+existing junk comments. It does this by detecting block comments that
+contain valid Python syntax that are likely to be commented out code.
+(It avoids false positives like the sentence ``this is not good``,
+which is valid Python syntax, but probably is not code.)
 
 -------
 Example
