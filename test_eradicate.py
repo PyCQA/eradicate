@@ -56,9 +56,15 @@ class UnitTests(unittest.TestCase):
         self.assertTrue(eradicate.comment_contains_code(
             '#print 1'))
 
+        self.assertFalse(eradicate.comment_contains_code(
+            '#to print'))
+
     def test_comment_contains_code_with_return(self):
         self.assertTrue(eradicate.comment_contains_code(
             '#return x'))
+
+        self.assertFalse(eradicate.comment_contains_code(
+            '#to return'))
 
     def test_comment_contains_code_with_multi_line(self):
         self.assertTrue(eradicate.comment_contains_code(
@@ -67,8 +73,14 @@ class UnitTests(unittest.TestCase):
         self.assertTrue(eradicate.comment_contains_code(
             '#else:'))
 
+        self.assertTrue(eradicate.comment_contains_code(
+            '#  else  :  '))
+
         self.assertFalse(eradicate.comment_contains_code(
             '#else'))
+
+        self.assertFalse(eradicate.comment_contains_code(
+            '#or else:'))
 
     def test_comment_contains_code_with_sentences(self):
         self.assertFalse(eradicate.comment_contains_code(
