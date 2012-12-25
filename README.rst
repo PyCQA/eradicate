@@ -27,7 +27,9 @@ Example
 
     $ eradicate --in-place example.py
 
-Before::
+Before running eradicate.
+
+.. code-block:: python
 
    #import os
    #from foo import junk
@@ -42,7 +44,9 @@ Before::
        #return True
        return False
 
-After::
+After running eradicate.
+
+.. code-block:: python
 
    a = 4
 
