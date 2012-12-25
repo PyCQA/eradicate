@@ -38,9 +38,14 @@ Before::
        #print('hello')
        print(x, y, z)
 
+       #return True
+       return False
+
 After::
 
    a = 4
 
    def foo(x, y, z):
        print(x, y, z)
+
+       return False
