@@ -19,14 +19,15 @@ def comment_contains_code(line):
     line = line.lstrip(' \t\v\n#').strip()
 
     # Check that this is possibly code.
-    for symbol in list('()[]{}:=') + ['print', 'return', 'break', 'continue']:
+    for symbol in list('()[]{}:=') + ['print', 'return', 'break', 'continue',
+                                      'import']:
         if symbol in line:
             break
     else:
         return False
 
     # Handle multi-line cases manually.
-    for ending in list(')]}') + ['else', 'try', 'finally', 'import']:
+    for ending in list(')]}') + ['else', 'try', 'finally']:
         if line.endswith(ending + ':'):
             return True
 
