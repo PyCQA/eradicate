@@ -7,7 +7,7 @@ import os
 import re
 import tokenize
 
-__version__ = '0.0.5'
+__version__ = '0.1'
 
 
 def comment_contains_code(line):
