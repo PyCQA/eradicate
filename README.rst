@@ -41,6 +41,7 @@ Before running eradicate.
        #print('hello')
        print(x, y, z)
 
+       # This is a real comment.
        #return True
        return False
 
