@@ -10,6 +10,12 @@ import tokenize
 __version__ = '0.1'
 
 
+try:
+    unicode
+except NameError:
+    unicode = str
+
+
 def comment_contains_code(line):
     """Return True comment contains code."""
     line = line.lstrip()
@@ -77,7 +83,7 @@ def fix_file(filename, args, standard_out):
     with open_with_encoding(filename, encoding=encoding) as input_file:
         source = input_file.read()
 
-    filtered_source = ''.join(filter_commented_out_code(source))
+    filtered_source = unicode().join(filter_commented_out_code(source))
 
     if source != filtered_source:
         if args.in_place:
@@ -91,7 +97,7 @@ def fix_file(filename, args, standard_out):
                 StringIO(filtered_source).readlines(),
                 'before/' + filename,
                 'after/' + filename)
-            standard_out.write(''.join(diff))
+            standard_out.write(unicode().join(diff))
 
 
 def open_with_encoding(filename, encoding, mode='r'):
