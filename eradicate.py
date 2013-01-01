@@ -131,7 +131,8 @@ def main(argv, standard_out, standard_error):
                         help='make changes to files instead of printing diffs')
     parser.add_argument('-r', '--recursive', action='store_true',
                         help='drill down directories recursively')
-    parser.add_argument('--version', action='version', version=__version__)
+    parser.add_argument('--version', action='version',
+                        version='%(prog)s ' + __version__)
     parser.add_argument('files', nargs='+', help='files to format')
 
     args = parser.parse_args(argv[1:])
