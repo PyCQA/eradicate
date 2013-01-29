@@ -14,7 +14,7 @@ coverage:
 	@python -m webbrowser -n "file://${PWD}/htmlcov/index.html"
 
 mutant:
-	@mut.py -t eradicate -u test_eradicate -mc
+	@mut.py --disable-operator RIL -t eradicate -u test_eradicate -mc
 
 readme:
 	@restview --long-description
