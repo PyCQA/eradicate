@@ -31,27 +31,28 @@ Before running eradicate.
 
 .. code-block:: python
 
-   #import os
-   #from foo import junk
-   #a = 3
-   a = 4
-   #foo(1, 2, 3)
+    #import os
+    #from foo import junk
+    #a = 3
+    a = 4
+    #foo(1, 2, 3)
 
-   def foo(x, y, z):
-       #print('hello')
-       print(x, y, z)
+    def foo(x, y, z):
+        #print('hello')
+        print(x, y, z)
 
-       # This is a real comment.
-       #return True
-       return False
+        # This is a real comment.
+        #return True
+        return False
 
 After running eradicate.
 
 .. code-block:: python
 
-   a = 4
+    a = 4
 
-   def foo(x, y, z):
+    def foo(x, y, z):
        print(x, y, z)
 
+       # This is a real comment.
        return False
