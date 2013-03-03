@@ -19,7 +19,7 @@ with open('README.rst') as readme:
                description='Removes commented-out code.',
                long_description=readme.read(),
                license='Expat License',
-               author='myint',
+               author='Steven Myint',
                url='https://github.com/myint/eradicate',
                classifiers=['Intended Audience :: Developers',
                             'Environment :: Console',
