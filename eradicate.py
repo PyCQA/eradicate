@@ -63,7 +63,7 @@ def comment_contains_code(line):
         if line.endswith(ending + ':'):
             return True
 
-    for symbol in ['if', 'elif', 'else', 'try', 'finally']:
+    for symbol in ['else', 'try', 'finally']:
         if re.match(r'^\s*' + symbol + r'\s*:\s*$', line):
             return True
 
