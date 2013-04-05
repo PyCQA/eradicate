@@ -1,7 +1,7 @@
 check:
 	pep8 eradicate eradicate.py setup.py
 	pep257 eradicate eradicate.py setup.py
-	pylint --report=no --include-ids=yes --disable=C0103,R0914,W0404,W0622 --rcfile=/dev/null eradicate.py setup.py
+	pylint --report=no --include-ids=yes --disable=C0103,R0911,R0914,W0404,W0622 --rcfile=/dev/null eradicate.py setup.py
 	python setup.py --long-description | rst2html --strict > /dev/null
 	scspell eradicate eradicate.py setup.py test_eradicate.py README.rst
 
