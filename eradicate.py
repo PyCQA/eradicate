@@ -23,6 +23,7 @@
 
 from __future__ import print_function
 
+import errno
 from io import StringIO
 import os
 import re
@@ -45,6 +46,10 @@ def comment_contains_code(line):
 
     line = line.lstrip(' \t\v\n#').strip()
 
+    # Ignore non-comment related hashes. For example, "# Issue #999".
+    if re.search('#[0-9]', line):
+        return False
+
     # Check that this is possibly code.
     for symbol in list('()[]{}:=') + ['print', 'return', 'break', 'continue',
                                       'import']:
@@ -58,7 +63,7 @@ def comment_contains_code(line):
         if line.endswith(ending + ':'):
             return True
 
-    for symbol in ['else', 'try', 'finally']:
+    for symbol in ['if', 'elif', 'else', 'try', 'finally']:
         if re.match(r'^\s*' + symbol + r'\s*:\s*$', line):
             return True
 
@@ -173,4 +178,6 @@ def main(argv, standard_out, standard_error):
             try:
                 fix_file(name, args=args, standard_out=standard_out)
             except IOError as exception:
+                if exception.errno == errno.EPIPE:
+                    return
                 print(exception, file=standard_error)
