@@ -12,7 +12,7 @@ before_install:
 install:
     - python setup.py --quiet install
 
-    - coverage run --omit='*/site-packages/*,*/distutils/*,*/lib-python/*' test_eradicate.py
+    - coverage run --include='eradicate.py,test_eradicate.py' test_eradicate.py
     - coverage report --show-missing
 
 script:
