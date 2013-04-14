@@ -23,7 +23,6 @@
 
 from __future__ import print_function
 
-import errno
 from io import StringIO
 import os
 import re
