@@ -24,11 +24,15 @@
 
 from __future__ import print_function
 
+import signal
 import sys
 import eradicate
 
 
 if __name__ == '__main__':
+    # Exit on broken pipe.
+    signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+
     try:
         sys.exit(eradicate.main(sys.argv,
                                 standard_out=sys.stdout,
