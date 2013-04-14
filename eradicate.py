@@ -98,9 +98,12 @@ def filter_commented_out_code(source):
     """Yield code with commented out code removed."""
     marked_lines = list(commented_out_code_line_numbers(source))
     sio = StringIO(source)
+    previous_line = ''
     for line_number, line in enumerate(sio.readlines(), start=1):
-        if line_number not in marked_lines:
+        if (line_number not in marked_lines or
+                previous_line.rstrip().endswith('\\')):
             yield line
+        previous_line = line
 
 
 def fix_file(filename, args, standard_out):

@@ -148,6 +148,17 @@ y = 1  # x = 3
 #     x = 0
 """))))
 
+    def test_filter_commented_out_code_should_avoid_escaped_newlines(self):
+        line = unicode("""\
+if False: \\
+# print(3)
+    print(2)
+    print(3)
+""")
+        self.assertEqual(
+            line,
+            ''.join(eradicate.filter_commented_out_code(line)))
+
     def test_filter_commented_out_code_with_larger_example(self):
         self.assertEqual(
             """\
