@@ -121,11 +121,12 @@ def fix_file(filename, args, standard_out):
         else:
             import difflib
             diff = difflib.unified_diff(
-                StringIO(source).readlines(),
-                StringIO(filtered_source).readlines(),
+                source.splitlines(),
+                filtered_source.splitlines(),
                 'before/' + filename,
-                'after/' + filename)
-            standard_out.write(unicode().join(diff))
+                'after/' + filename,
+                lineterm='')
+            standard_out.write(unicode('\n').join(list(diff) + ['']))
 
 
 def open_with_encoding(filename, encoding, mode='r'):
