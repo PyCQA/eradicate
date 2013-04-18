@@ -12,9 +12,9 @@ eradicate
 
 *eradicate* removes commented-out code from Python files.
 
-------------
+
 Introduction
-------------
+============
 
 With modern revision control available, there is no reason to save
 commented-out code to your repository. *eradicate* helps cleans up
@@ -23,9 +23,9 @@ contain valid Python syntax that are likely to be commented out code.
 (It avoids false positives like the sentence ``this is not good``,
 which is valid Python syntax, but is probably not code.)
 
--------
+
 Example
--------
+=======
 
 ::
 
