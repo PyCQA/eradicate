@@ -14,18 +14,22 @@ def version():
 
 
 with open('README.rst') as readme:
-    core.setup(name='eradicate',
-               version=version(),
-               description='Removes commented-out code.',
-               long_description=readme.read(),
-               license='Expat License',
-               author='Steven Myint',
-               url='https://github.com/myint/eradicate',
-               classifiers=['Intended Audience :: Developers',
-                            'Environment :: Console',
-                            'Programming Language :: Python :: 2.7',
-                            'Programming Language :: Python :: 3',
-                            'License :: OSI Approved :: MIT License'],
-               keywords='clean, format, commented-out code',
-               py_modules=['eradicate'],
-               scripts=['eradicate'])
+    core.setup(
+        name='eradicate',
+        version=version(),
+        description='Removes commented-out code.',
+        long_description=readme.read(),
+        license='Expat License',
+        author='Steven Myint',
+        url='https://github.com/myint/eradicate',
+        classifiers=['Environment :: Console',
+                     'Intended Audience :: Developers',
+                     'License :: OSI Approved :: MIT License',
+                     'Programming Language :: Python :: 2.7',
+                     'Programming Language :: Python :: 3',
+                     'Programming Language :: Python :: 3.2',
+                     'Programming Language :: Python :: 3.3',
+                     'Topic :: Software Development :: Quality Assurance'],
+        keywords='clean, format, commented-out code',
+        py_modules=['eradicate'],
+        scripts=['eradicate'])
