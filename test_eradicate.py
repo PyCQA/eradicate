@@ -312,7 +312,6 @@ class StubFile(object):
 
     def write(*_):
         """Ignore."""
-        pass
 
 
 if __name__ == '__main__':
