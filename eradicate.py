@@ -22,6 +22,7 @@
 """Removes commented-out Python code."""
 
 from __future__ import print_function
+from __future__ import unicode_literals
 
 from io import StringIO
 import os
@@ -111,7 +112,7 @@ def fix_file(filename, args, standard_out):
     with open_with_encoding(filename, encoding=encoding) as input_file:
         source = input_file.read()
 
-    filtered_source = unicode().join(filter_commented_out_code(source))
+    filtered_source = ''.join(filter_commented_out_code(source))
 
     if source != filtered_source:
         if args.in_place:
@@ -126,7 +127,7 @@ def fix_file(filename, args, standard_out):
                 'before/' + filename,
                 'after/' + filename,
                 lineterm='')
-            standard_out.write(unicode('\n').join(list(diff) + ['']))
+            standard_out.write('\n'.join(list(diff) + ['']))
 
 
 def open_with_encoding(filename, encoding, mode='r'):

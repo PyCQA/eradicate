@@ -2,18 +2,14 @@
 
 """Test suite for eradicate."""
 
+from __future__ import unicode_literals
+
 import contextlib
 from io import StringIO
 import tempfile
 import unittest
 
 import eradicate
-
-
-try:
-    unicode
-except NameError:
-    unicode = str
 
 
 class UnitTests(unittest.TestCase):
@@ -93,7 +89,7 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(
             [1, 3],
             list(eradicate.commented_out_code_line_numbers(
-                unicode("""\
+                """\
 # print(5)
 # This is a comment.
 # x = 1
@@ -102,13 +98,13 @@ y = 1  # x = 3
 
 # The below is another comment.
 # 3 / 2 + 21
-"""))))
+""")))
 
     def test_commented_out_code_line_numbers_with_errors(self):
         self.assertEqual(
             [1, 3],
             list(eradicate.commented_out_code_line_numbers(
-                unicode("""\
+                """\
 # print(5)
 # This is a comment.
 # x = 1
@@ -120,7 +116,7 @@ y = 1  # x = 3
 def foo():
         1
     2
-"""))))
+""")))
 
     def test_filter_commented_out_code(self):
         self.assertEqual(
@@ -133,7 +129,7 @@ y = 1  # x = 3
 # 3 / 2 + 21
 """,
             ''.join(eradicate.filter_commented_out_code(
-                unicode("""\
+                """\
 # print(5)
 # This is a comment.
 # x = 1
@@ -146,15 +142,15 @@ y = 1  # x = 3
 #     x = 1
 # finally:
 #     x = 0
-"""))))
+""")))
 
     def test_filter_commented_out_code_should_avoid_escaped_newlines(self):
-        line = unicode("""\
+        line = """\
 if False: \\
 # print(3)
     print(2)
     print(3)
-""")
+"""
         self.assertEqual(
             line,
             ''.join(eradicate.filter_commented_out_code(line)))
@@ -170,7 +166,7 @@ y = 1  # x = 3
 # 3 / 2 + 21
 """,
             ''.join(eradicate.filter_commented_out_code(
-                unicode("""\
+                """\
 # print(5)
 # This is a comment.
 # x = 1
@@ -179,7 +175,7 @@ y = 1  # x = 3
 
 # The below is another comment.
 # 3 / 2 + 21
-"""))))
+""")))
 
     def test_detect_encoding_with_bad_encoding(self):
         with temporary_file('# -*- coding: blah -*-\n') as filename:
