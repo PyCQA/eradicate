@@ -17,4 +17,4 @@ mutant:
 	@mut.py --disable-operator RIL -t eradicate -u test_eradicate -mc
 
 readme:
-	@restview --long-description
+	@restview --long-description --strict
