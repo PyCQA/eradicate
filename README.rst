@@ -3,12 +3,12 @@ eradicate
 =========
 
 .. image:: https://travis-ci.org/myint/eradicate.png?branch=master
-   :target: https://travis-ci.org/myint/eradicate
-   :alt: Build status
+    :target: https://travis-ci.org/myint/eradicate
+    :alt: Build status
 
 .. image:: https://coveralls.io/repos/myint/eradicate/badge.png?branch=master
-   :target: https://coveralls.io/r/myint/eradicate
-   :alt: Test coverage status
+    :target: https://coveralls.io/r/myint/eradicate
+    :alt: Test coverage status
 
 *eradicate* removes commented-out code from Python files.
 
@@ -56,7 +56,7 @@ After running eradicate.
     a = 4
 
     def foo(x, y, z):
-       print(x, y, z)
+        print(x, y, z)
 
-       # This is a real comment.
-       return False
+        # This is a real comment.
+        return False
