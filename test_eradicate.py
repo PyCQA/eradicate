@@ -5,7 +5,9 @@
 from __future__ import unicode_literals
 
 import contextlib
-from io import StringIO
+import io
+import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -190,7 +192,7 @@ class SystemTests(unittest.TestCase):
 # x * 3 == False
 # x is a variable
 """) as filename:
-            output_file = StringIO()
+            output_file = io.StringIO()
             eradicate.main(argv=['my_fake_program', filename],
                            standard_out=output_file,
                            standard_error=None)
@@ -208,7 +210,7 @@ class SystemTests(unittest.TestCase):
 # x is a variable
 """, directory=directory):
 
-                output_file = StringIO()
+                output_file = io.StringIO()
                 eradicate.main(argv=['my_fake_program',
                                      '--recursive',
                                      directory],
@@ -230,7 +232,7 @@ class SystemTests(unittest.TestCase):
 # x is a variable
 """, directory=inner_directory):
 
-                    output_file = StringIO()
+                    output_file = io.StringIO()
                     eradicate.main(argv=['my_fake_program',
                                          '--recursive',
                                          directory],
@@ -245,7 +247,7 @@ class SystemTests(unittest.TestCase):
 # x * 3 == False
 # x is a variable
 """) as filename:
-            output_file = StringIO()
+            output_file = io.StringIO()
             eradicate.main(argv=['my_fake_program', '--in-place', filename],
                            standard_out=output_file,
                            standard_error=None)
@@ -255,7 +257,7 @@ class SystemTests(unittest.TestCase):
 """, f.read())
 
     def test_with_missing_file(self):
-        output_file = StringIO()
+        output_file = io.StringIO()
         ignore = StubFile()
         eradicate.main(argv=['my_fake_program', '--in-place', '.fake'],
                        standard_out=output_file,
@@ -267,8 +269,8 @@ class SystemTests(unittest.TestCase):
 # x * 3 == False
 # x is a variable
 """) as filename:
-            import subprocess
-            process = subprocess.Popen(['./eradicate', filename],
+            process = subprocess.Popen([sys.executable,
+                                        './eradicate', filename],
                                        stdout=subprocess.PIPE)
             self.assertEqual("""\
 @@ -1,2 +1 @@
