@@ -38,7 +38,7 @@ except NameError:
     unicode = str
 
 
-PARTIAL_DICTIONARY_REGEX = re.compile(r'^\s*[\w\'"]+\s*:\s*[\w\'"]+,\s*$')
+PARTIAL_DICTIONARY_REGEX = re.compile(r'^\s*[\'"][\w]+[\'"]\s*:.+,\s*$')
 
 
 def comment_contains_code(line):
