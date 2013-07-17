@@ -38,6 +38,9 @@ except NameError:
     unicode = str
 
 
+PARTIAL_DICTIONARY_REGEX = re.compile(r'^\s*[\w\'"]+\s*:\s*[\w\'"]+,\s*$')
+
+
 def comment_contains_code(line):
     """Return True comment contains code."""
     line = line.lstrip()
@@ -69,6 +72,9 @@ def comment_contains_code(line):
 
     for remove_beginning in ['print', 'return']:
         line = re.sub('^' + remove_beginning + r'\b\s*', '', line)
+
+    if re.match(PARTIAL_DICTIONARY_REGEX, line):
+        return True
 
     try:
         compile(line, '<string>', 'exec')
