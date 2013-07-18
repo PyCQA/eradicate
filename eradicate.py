@@ -61,14 +61,8 @@ def comment_contains_code(line):
     else:
         return False
 
-    # Handle multi-line cases manually.
-    for ending in ')]}':
-        if line.endswith(ending + ':'):
-            return True
-        if line.strip() == ending:
-            return True
-        if line.strip() == ending + ',':
-            return True
+    if multiline_case(line):
+        return True
 
     for symbol in ['else', 'try', 'finally']:
         if re.match(r'^\s*' + symbol + r'\s*:\s*$', line):
@@ -85,6 +79,21 @@ def comment_contains_code(line):
         return True
     except (SyntaxError, TypeError, UnicodeDecodeError):
         return False
+
+
+def multiline_case(line):
+    """Return True if line is probably part of some multiline code."""
+    for ending in ')]}':
+        if line.endswith(ending + ':'):
+            return True
+
+        if line.strip() == ending:
+            return True
+
+        if line.strip() == ending + ',':
+            return True
+
+    return False
 
 
 def commented_out_code_line_numbers(source):
