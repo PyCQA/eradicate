@@ -17,26 +17,44 @@ import eradicate
 class UnitTests(unittest.TestCase):
 
     def test_comment_contains_code(self):
-        for line in [
-            '#',
-            '# This is a (real) comment.',
-            '# 123',
-            '# 123.1',
-            '# 1, 2, 3',
-            'x = 1  # x = 1',
-            '# Issue #999: This is not code',
-        ]:
-            self.assertFalse(eradicate.comment_contains_code(line))
+        self.assertFalse(eradicate.comment_contains_code(
+            '#'))
 
-        for line in [
-            '# x = 1',
-            '#from foo import eradicate',
-            '#import eradicate',
-            '#"key": value,',
-            '#"key": "value",',
-            '#"key": 1 + 1,',
-        ]:
-            self.assertTrue(eradicate.comment_contains_code(line))
+        self.assertFalse(eradicate.comment_contains_code(
+            '# This is a (real) comment.'))
+
+        self.assertFalse(eradicate.comment_contains_code(
+            '# 123'))
+
+        self.assertFalse(eradicate.comment_contains_code(
+            '# 123.1'))
+
+        self.assertFalse(eradicate.comment_contains_code(
+            '# 1, 2, 3'))
+
+        self.assertFalse(eradicate.comment_contains_code(
+            'x = 1  # x = 1'))
+
+        self.assertFalse(eradicate.comment_contains_code(
+            '# Issue #999: This is not code'))
+
+        self.assertTrue(eradicate.comment_contains_code(
+            '# x = 1'))
+
+        self.assertTrue(eradicate.comment_contains_code(
+            '#from foo import eradicate'))
+
+        self.assertTrue(eradicate.comment_contains_code(
+            '#import eradicate'))
+
+        self.assertTrue(eradicate.comment_contains_code(
+            '#"key": value,'))
+
+        self.assertTrue(eradicate.comment_contains_code(
+            '#"key": "value",'))
+
+        self.assertTrue(eradicate.comment_contains_code(
+            '#"key": 1 + 1,'))
 
     def test_comment_contains_code_with_print(self):
         self.assertTrue(eradicate.comment_contains_code(
