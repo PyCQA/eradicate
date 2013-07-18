@@ -38,23 +38,15 @@ class UnitTests(unittest.TestCase):
         self.assertFalse(eradicate.comment_contains_code(
             '# Issue #999: This is not code'))
 
-        self.assertTrue(eradicate.comment_contains_code(
-            '# x = 1'))
-
-        self.assertTrue(eradicate.comment_contains_code(
-            '#from foo import eradicate'))
-
-        self.assertTrue(eradicate.comment_contains_code(
-            '#import eradicate'))
-
-        self.assertTrue(eradicate.comment_contains_code(
-            '#"key": value,'))
-
-        self.assertTrue(eradicate.comment_contains_code(
-            '#"key": "value",'))
-
-        self.assertTrue(eradicate.comment_contains_code(
-            '#"key": 1 + 1,'))
+        for line in [
+            '# x = 1',
+            '#from foo import eradicate',
+            '#import eradicate',
+            '#"key": value,',
+            '#"key": "value",',
+            '#"key": 1 + 1,',
+        ]:
+            self.assertTrue(eradicate.comment_contains_code(line))
 
     def test_comment_contains_code_with_print(self):
         self.assertTrue(eradicate.comment_contains_code(
