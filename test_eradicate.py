@@ -56,6 +56,12 @@ class UnitTests(unittest.TestCase):
         self.assertTrue(eradicate.comment_contains_code(
             '#"key": 1 + 1,'))
 
+        self.assertTrue(eradicate.comment_contains_code(
+            "#'key': 1 + 1,"))
+
+        self.assertTrue(eradicate.comment_contains_code(
+            '#"key": {'))
+
     def test_comment_contains_code_with_print(self):
         self.assertTrue(eradicate.comment_contains_code(
             '#print'))
