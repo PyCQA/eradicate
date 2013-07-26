@@ -54,7 +54,7 @@ def comment_contains_code(line):
         return False
 
     # Check that this is possibly code.
-    for symbol in list('()[]{}:=') + ['print', 'return', 'break', 'continue',
+    for symbol in list('()[]{}:=%') + ['print', 'return', 'break', 'continue',
                                       'import']:
         if symbol in line:
             break
@@ -92,6 +92,9 @@ def multiline_case(line):
 
         if line.strip() == ending + ',':
             return True
+
+    if line.endswith('\\'):
+        return True
 
     return False
 

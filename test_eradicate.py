@@ -98,6 +98,9 @@ class UnitTests(unittest.TestCase):
         self.assertTrue(eradicate.comment_contains_code(
             '#  else  :  '))
 
+        self.assertTrue(eradicate.comment_contains_code(
+            '# "foo %d" % \\'))
+
         self.assertFalse(eradicate.comment_contains_code(
             '#else'))
 
