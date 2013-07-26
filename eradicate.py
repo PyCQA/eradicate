@@ -55,7 +55,7 @@ def comment_contains_code(line):
 
     # Check that this is possibly code.
     for symbol in list('()[]{}:=%') + ['print', 'return', 'break', 'continue',
-                                      'import']:
+                                       'import']:
         if symbol in line:
             break
     else:
