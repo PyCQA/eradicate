@@ -87,13 +87,13 @@ def multiline_case(line):
         if line.endswith(ending + ':'):
             return True
 
-        if line.strip() == ending:
-            return True
-
         if line.strip() == ending + ',':
             return True
 
     if line.endswith('\\'):
+        return True
+
+    if re.match(r'^[()\[\]{}\s]+$', line):
         return True
 
     return False
