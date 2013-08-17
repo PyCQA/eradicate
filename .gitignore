@@ -1,9 +1,10 @@
-.*.swp
 *.pyc
+.*.swp
+.tox/
+.travis-solo/
 MANIFEST
 README.html
 __pycache__/
-.tox/
 build/
 dist/
 htmlcov/
