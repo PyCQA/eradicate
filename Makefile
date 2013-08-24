@@ -4,7 +4,7 @@ check:
 	pylint \
 		--reports=no \
 		--msg-template='{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}' \
-		--disable=C0103,R0911,R0914,W0404,W0622 \
+		--disable=C0103,R0911 \
 		--rcfile=/dev/null \
 		eradicate.py setup.py
 	python setup.py --long-description | rst2html --strict > /dev/null
