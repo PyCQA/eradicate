@@ -104,11 +104,17 @@ class UnitTests(unittest.TestCase):
         self.assertTrue(eradicate.comment_contains_code(
             '# "foo %d" % \\'))
 
+        self.assertTrue(eradicate.comment_contains_code(
+            '#elif True:'))
+
         self.assertFalse(eradicate.comment_contains_code(
             '#else'))
 
         self.assertFalse(eradicate.comment_contains_code(
             '#or else:'))
+
+        self.assertFalse(eradicate.comment_contains_code(
+            '#else True:'))
 
     def test_comment_contains_code_with_sentences(self):
         self.assertFalse(eradicate.comment_contains_code(
