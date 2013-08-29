@@ -68,8 +68,7 @@ def comment_contains_code(line):
         if re.match(r'^\s*' + symbol + r'\s*:\s*$', line):
             return True
 
-    for remove_beginning in ['print', 'return']:
-        line = re.sub('^' + remove_beginning + r'\b\s*', '', line)
+    line = re.sub(r'^(print|return)\b\s*', '', line)
 
     if re.match(PARTIAL_DICTIONARY_REGEX, line):
         return True
