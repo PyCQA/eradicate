@@ -92,6 +92,9 @@ def multiline_case(line):
     if line.endswith('\\'):
         return True
 
+    if '=' in line and line.strip().endswith(('(', '[', '{')):
+        return True
+
     if re.match(r'^[()\[\]{}\s]+$', line):
         return True
 

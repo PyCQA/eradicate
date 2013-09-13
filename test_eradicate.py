@@ -107,6 +107,9 @@ class UnitTests(unittest.TestCase):
         self.assertTrue(eradicate.comment_contains_code(
             '#elif True:'))
 
+        self.assertTrue(eradicate.comment_contains_code(
+            '#x = foo('))
+
         self.assertFalse(eradicate.comment_contains_code(
             '#else'))
 
