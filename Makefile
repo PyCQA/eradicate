@@ -3,8 +3,7 @@ check:
 	pep257 eradicate eradicate.py setup.py
 	pylint \
 		--reports=no \
-		--msg-template='{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}' \
-		--disable=C0103,R0911 \
+		--disable=invalid-name,too-many-return-statements \
 		--rcfile=/dev/null \
 		eradicate.py setup.py
 	python setup.py --long-description | rst2html --strict > /dev/null
