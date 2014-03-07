@@ -312,7 +312,7 @@ class SystemTests(unittest.TestCase):
 @@ -1,2 +1 @@
 -# x * 3 == False
  # x is a variable
-""", '\n'.join(process.communicate()[0].decode('utf-8').split('\n')[2:]))
+""", '\n'.join(process.communicate()[0].decode().split('\n')[2:]))
 
 
 @contextlib.contextmanager
@@ -321,7 +321,7 @@ def temporary_file(contents, directory='.', prefix=''):
     f = tempfile.NamedTemporaryFile(suffix='.py', prefix=prefix,
                                     delete=False, dir=directory)
     try:
-        f.write(contents.encode('utf8'))
+        f.write(contents.encode())
         f.close()
         yield f.name
     finally:
