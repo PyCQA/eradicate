@@ -6,18 +6,14 @@ eradicate
     :target: https://travis-ci.org/myint/eradicate
     :alt: Build status
 
-.. image:: https://coveralls.io/repos/myint/eradicate/badge.png?branch=master
-    :target: https://coveralls.io/r/myint/eradicate
-    :alt: Test coverage status
-
-*eradicate* removes commented-out code from Python files.
+``eradicate`` removes commented-out code from Python files.
 
 
 Introduction
 ============
 
 With modern revision control available, there is no reason to save
-commented-out code to your repository. *eradicate* helps cleans up
+commented-out code to your repository. ``eradicate`` helps cleans up
 existing junk comments. It does this by detecting block comments that
 contain valid Python syntax that are likely to be commented out code.
 (It avoids false positives like the sentence ``this is not good``,
@@ -31,7 +27,7 @@ Example
 
     $ eradicate --in-place example.py
 
-Before running eradicate.
+Before running ``eradicate``.
 
 .. code-block:: python
 
@@ -49,7 +45,7 @@ Before running eradicate.
         #return True
         return False
 
-After running eradicate.
+After running ``eradicate``.
 
 .. code-block:: python
 
