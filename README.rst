@@ -2,11 +2,11 @@
 eradicate
 =========
 
-.. image:: https://travis-ci.org/myint/eradicate.png?branch=master
+.. image:: https://travis-ci.org/myint/eradicate.svg?branch=master
     :target: https://travis-ci.org/myint/eradicate
     :alt: Build status
 
-.. image:: https://coveralls.io/repos/myint/eradicate/badge.png?branch=master
+.. image:: https://coveralls.io/repos/myint/eradicate/badge.svg?branch=master
     :target: https://coveralls.io/r/myint/eradicate
     :alt: Test coverage status
 
