@@ -5,7 +5,7 @@ python:
     - "pypy"
     - "3.2"
     - "3.3"
-    #- "3.4"
+    - "3.4"
 
 before_install:
     - pip --quiet install coverage
