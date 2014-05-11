@@ -6,7 +6,7 @@ check:
 		--disable=invalid-name,too-many-return-statements \
 		--rcfile=/dev/null \
 		eradicate.py setup.py
-	python setup.py --long-description | rst2html --strict > /dev/null
+	python setup.py --long-description | rstcheck -
 	scspell eradicate eradicate.py setup.py test_eradicate.py README.rst
 
 coverage:
