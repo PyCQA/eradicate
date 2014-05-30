@@ -32,6 +32,7 @@ with open('README.rst') as readme:
                      'Programming Language :: Python :: 3',
                      'Programming Language :: Python :: 3.2',
                      'Programming Language :: Python :: 3.3',
+                     'Programming Language :: Python :: 3.4',
                      'Topic :: Software Development :: Quality Assurance'],
         keywords='clean, format, commented-out code',
         py_modules=['eradicate'],
