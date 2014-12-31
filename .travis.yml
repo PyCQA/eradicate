@@ -7,9 +7,6 @@ python:
     - "3.3"
     - "3.4"
 
-before_install:
-    - pip --quiet install coverage
-
 install:
     - python setup.py --quiet install
 
@@ -17,8 +14,10 @@ script:
     - python test_eradicate.py
 
 after_success:
+    - travis_retry pip --quiet install coverage
+
     - coverage run --include='eradicate.py,test_eradicate.py' test_eradicate.py
     - coverage report --show-missing
 
-    - pip install --quiet coveralls
+    - travis_retry pip install --quiet coveralls
     - coveralls
