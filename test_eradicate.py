@@ -123,6 +123,19 @@ class UnitTests(unittest.TestCase):
         self.assertFalse(eradicate.comment_contains_code(
             '#code is good'))
 
+    def test_comment_contains_code_with_encoding(self):
+        self.assertFalse(eradicate.comment_contains_code(
+            '# coding=utf-8'))
+
+        self.assertFalse(eradicate.comment_contains_code(
+            '#coding = utf-8'))
+
+        self.assertFalse(eradicate.comment_contains_code(
+            '# coding: utf-8'))
+
+        self.assertTrue(eradicate.comment_contains_code(
+            '# codings=utf-8'))
+
     def test_commented_out_code_line_numbers(self):
         self.assertEqual(
             [1, 3],

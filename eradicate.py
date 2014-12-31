@@ -53,6 +53,9 @@ def comment_contains_code(line):
     if re.search('#[0-9]', line):
         return False
 
+    if re.match(r'coding\s*=', line):
+        return False
+
     # Check that this is possibly code.
     for symbol in list('()[]{}:=%') + ['print', 'return', 'break', 'continue',
                                        'import']:
