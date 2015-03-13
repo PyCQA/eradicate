@@ -38,6 +38,7 @@ except NameError:
     unicode = str
 
 
+MULTILINE_ASSIGNMENT_REGEX = re.compile(r'^\s*\w+\s*=.*[(\[{]$')
 PARTIAL_DICTIONARY_REGEX = re.compile(r'^\s*[\'"]\w+[\'"]\s*:.+[,{]\s*$')
 
 
@@ -95,7 +96,7 @@ def multiline_case(line):
     if line.endswith('\\'):
         return True
 
-    if re.match(r'^\s*\w+\s*=.*[(\[{]$', line):
+    if re.match(MULTILINE_ASSIGNMENT_REGEX, line):
         return True
 
     if re.match(r'^[()\[\]{}\s]+$', line):
