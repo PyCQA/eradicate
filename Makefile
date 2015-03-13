@@ -3,7 +3,9 @@ check:
 	pep257 eradicate eradicate.py setup.py
 	pylint \
 		--reports=no \
-		--disable=invalid-name,too-many-return-statements \
+		--disable=bad-continuation \
+		--disable=invalid-name \
+		--disable=too-many-return-statements \
 		--rcfile=/dev/null \
 		eradicate.py setup.py
 	python setup.py --long-description | rstcheck -
