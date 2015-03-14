@@ -24,12 +24,12 @@
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from io import StringIO
+import io
 import os
 import re
 import tokenize
 
-__version__ = '0.1.5'
+__version__ = '0.1.6'
 
 
 try:
@@ -107,7 +107,7 @@ def multiline_case(line):
 
 def commented_out_code_line_numbers(source):
     """Yield line numbers of commented-out code."""
-    sio = StringIO(source)
+    sio = io.StringIO(source)
     try:
         for token in tokenize.generate_tokens(sio.readline):
             token_type = token[0]
@@ -125,7 +125,7 @@ def commented_out_code_line_numbers(source):
 def filter_commented_out_code(source):
     """Yield code with commented out code removed."""
     marked_lines = list(commented_out_code_line_numbers(source))
-    sio = StringIO(source)
+    sio = io.StringIO(source)
     previous_line = ''
     for line_number, line in enumerate(sio.readlines(), start=1):
         if (line_number not in marked_lines or
