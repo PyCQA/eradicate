@@ -33,12 +33,6 @@ import tokenize
 __version__ = '0.1.6'
 
 
-try:
-    unicode
-except NameError:
-    unicode = str
-
-
 MULTILINE_ASSIGNMENT_REGEX = re.compile(r'^\s*\w+\s*=.*[(\[{]$')
 PARTIAL_DICTIONARY_REGEX = re.compile(r'^\s*[\'"]\w+[\'"]\s*:.+[,{]\s*$')
 
@@ -198,7 +192,7 @@ def main(argv, standard_out, standard_error):
     while filenames:
         name = filenames.pop(0)
         if args.recursive and os.path.isdir(name):
-            for root, directories, children in os.walk(unicode(name)):
+            for root, directories, children in os.walk('{}'.format(name)):
                 filenames += [os.path.join(root, f) for f in children
                               if f.endswith('.py') and
                               not f.startswith('.')]
@@ -208,4 +202,4 @@ def main(argv, standard_out, standard_error):
             try:
                 fix_file(name, args=args, standard_out=standard_out)
             except IOError as exception:
-                print(unicode(exception), file=standard_error)
+                print('{}'.format(exception), file=standard_error)
