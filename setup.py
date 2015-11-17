@@ -35,5 +35,9 @@ with open('README.rst') as readme:
                      'Programming Language :: Python :: 3.4',
                      'Topic :: Software Development :: Quality Assurance'],
         keywords='clean, format, commented-out code',
-        py_modules=['eradicate'],
-        scripts=['eradicate'])
+        py_modules=['eradicate', 'pylama_eradicate'],
+        scripts=['eradicate'],
+        entry_points={
+            'pylama.linter': ['eradicate = pylama_eradicate:Linter'],
+        }
+    )
