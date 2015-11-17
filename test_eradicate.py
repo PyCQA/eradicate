@@ -110,6 +110,9 @@ class UnitTests(unittest.TestCase):
         self.assertTrue(eradicate.comment_contains_code(
             '#x = foo('))
 
+        self.assertTrue(eradicate.comment_contains_code(
+            '#except Exception:'))
+
         self.assertFalse(eradicate.comment_contains_code(
             '# this is = to that :('))
 

@@ -63,7 +63,8 @@ def comment_contains_code(line):
     if multiline_case(line):
         return True
 
-    for symbol in [r'elif\s+.*', 'else', r'if\s+.*', 'try', 'finally']:
+    for symbol in [r'elif\s+.*', 'else', r'if\s+.*', 'try',
+                   'finally', r'except\s+.*']:
         if re.match(r'^\s*' + symbol + r'\s*:\s*$', line):
             return True
 
