@@ -1,6 +1,6 @@
 check:
-	pep8 eradicate eradicate.py setup.py
-	pep257 eradicate eradicate.py setup.py
+	pycodestyle eradicate eradicate.py setup.py
+	pydocstyle eradicate eradicate.py setup.py
 	pylint \
 		--reports=no \
 		--disable=bad-continuation \
