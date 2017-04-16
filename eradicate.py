@@ -30,7 +30,7 @@ import os
 import re
 import tokenize
 
-__version__ = '0.1.6'
+__version__ = '0.2'
 
 
 MULTILINE_ASSIGNMENT_REGEX = re.compile(r'^\s*\w+\s*=.*[(\[{]$')
