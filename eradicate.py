@@ -49,6 +49,9 @@ def comment_contains_code(line):
     if re.search('#[0-9]', line):
         return False
 
+    if line.startswith('pylint:'):
+        return False
+
     if re.match(r'coding\s*[=:]', line):
         return False
 

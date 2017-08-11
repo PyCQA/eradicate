@@ -36,6 +36,9 @@ class UnitTests(unittest.TestCase):
             'x = 1  # x = 1'))
 
         self.assertFalse(eradicate.comment_contains_code(
+            '# pylint: disable=redefined-outer-name'))
+
+        self.assertFalse(eradicate.comment_contains_code(
             '# Issue #999: This is not code'))
 
         self.assertTrue(eradicate.comment_contains_code(
