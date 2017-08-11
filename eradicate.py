@@ -66,7 +66,6 @@ def comment_contains_code(line, aggressive=True):
     if multiline_case(line, aggressive=aggressive):
         return True
 
-
     symbol_list = [r'elif\s+.*', 'else', 'try',
                    'finally', r'except\s+.*']
     if aggressive:
