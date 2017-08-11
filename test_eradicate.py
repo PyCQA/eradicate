@@ -237,6 +237,18 @@ y = 1  # x = 3
 # 3 / 2 + 21
 """)))
 
+    def test_filter_commented_out_code_without_aggressive(self):
+        code = """\
+# iterate through choices inside of parenthesis (separated by '|'):
+
+# if the Optional takes a value, format is:
+#    -s ARGS, --long ARGS
+"""
+        self.assertEqual(
+            code,
+            ''.join(eradicate.filter_commented_out_code(code,
+                                                        aggressive=False)))
+
     def test_detect_encoding_with_bad_encoding(self):
         with temporary_file('# -*- coding: blah -*-\n') as filename:
             self.assertEqual('latin-1',

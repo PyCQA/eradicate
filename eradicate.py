@@ -30,14 +30,14 @@ import os
 import re
 import tokenize
 
-__version__ = '0.2.1'
+__version__ = '1.0a0'
 
 
 MULTILINE_ASSIGNMENT_REGEX = re.compile(r'^\s*\w+\s*=.*[(\[{]$')
 PARTIAL_DICTIONARY_REGEX = re.compile(r'^\s*[\'"]\w+[\'"]\s*:.+[,{]\s*$')
 
 
-def comment_contains_code(line):
+def comment_contains_code(line, aggressive=True):
     """Return True comment contains code."""
     line = line.lstrip()
     if not line.startswith('#'):
@@ -63,11 +63,16 @@ def comment_contains_code(line):
     else:
         return False
 
-    if multiline_case(line):
+    if multiline_case(line, aggressive=aggressive):
         return True
 
-    for symbol in [r'elif\s+.*', 'else', r'if\s+.*', 'try',
-                   'finally', r'except\s+.*']:
+
+    symbol_list = [r'elif\s+.*', 'else', 'try',
+                   'finally', r'except\s+.*']
+    if aggressive:
+        symbol_list.append(r'if\s+.*')
+
+    for symbol in symbol_list:
         if re.match(r'^\s*' + symbol + r'\s*:\s*$', line):
             return True
 
@@ -83,14 +88,15 @@ def comment_contains_code(line):
         return False
 
 
-def multiline_case(line):
+def multiline_case(line, aggressive=True):
     """Return True if line is probably part of some multiline code."""
-    for ending in ')]}':
-        if line.endswith(ending + ':'):
-            return True
+    if aggressive:
+        for ending in ')]}':
+            if line.endswith(ending + ':'):
+                return True
 
-        if line.strip() == ending + ',':
-            return True
+            if line.strip() == ending + ',':
+                return True
 
     if line.endswith('\\'):
         return True
@@ -104,7 +110,7 @@ def multiline_case(line):
     return False
 
 
-def commented_out_code_line_numbers(source):
+def commented_out_code_line_numbers(source, aggressive=True):
     """Yield line numbers of commented-out code."""
     sio = io.StringIO(source)
     try:
@@ -115,15 +121,16 @@ def commented_out_code_line_numbers(source):
 
             if (token_type == tokenize.COMMENT and
                     line.lstrip().startswith('#') and
-                    comment_contains_code(line)):
+                    comment_contains_code(line, aggressive)):
                 yield start_row
     except (tokenize.TokenError, IndentationError):
         pass
 
 
-def filter_commented_out_code(source):
+def filter_commented_out_code(source, aggressive=True):
     """Yield code with commented out code removed."""
-    marked_lines = list(commented_out_code_line_numbers(source))
+    marked_lines = list(commented_out_code_line_numbers(source,
+                                                        aggressive))
     sio = io.StringIO(source)
     previous_line = ''
     for line_number, line in enumerate(sio.readlines(), start=1):
@@ -139,7 +146,8 @@ def fix_file(filename, args, standard_out):
     with open_with_encoding(filename, encoding=encoding) as input_file:
         source = input_file.read()
 
-    filtered_source = ''.join(filter_commented_out_code(source))
+    filtered_source = ''.join(filter_commented_out_code(source,
+                                                        args.aggressive))
 
     if source != filtered_source:
         if args.in_place:
@@ -186,6 +194,9 @@ def main(argv, standard_out, standard_error):
                         help='make changes to files instead of printing diffs')
     parser.add_argument('-r', '--recursive', action='store_true',
                         help='drill down directories recursively')
+    parser.add_argument('-a', '--aggressive', action='store_true',
+                        help='make more aggressive changes; '
+                             'this may result in false positives')
     parser.add_argument('--version', action='version',
                         version='%(prog)s ' + __version__)
     parser.add_argument('files', nargs='+', help='files to format')
