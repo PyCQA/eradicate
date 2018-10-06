@@ -137,10 +137,13 @@ class UnitTests(unittest.TestCase):
             '# coding=utf-8'))
 
         self.assertFalse(eradicate.comment_contains_code(
-            '#coding = utf-8'))
+            '#coding= utf-8'))
 
         self.assertFalse(eradicate.comment_contains_code(
             '# coding: utf-8'))
+
+        self.assertFalse(eradicate.comment_contains_code(
+            '# encoding: utf8'))
 
         self.assertTrue(eradicate.comment_contains_code(
             '# codings=utf-8'))

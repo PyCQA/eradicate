@@ -52,7 +52,7 @@ def comment_contains_code(line, aggressive=True):
     if line.startswith('pylint:'):
         return False
 
-    if re.match(r'coding\s*[=:]', line):
+    if re.match(r'.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)', line):
         return False
 
     # Check that this is possibly code.
