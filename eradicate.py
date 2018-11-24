@@ -97,6 +97,11 @@ def multiline_case(line, aggressive=True):
             if line.strip() == ending + ',':
                 return True
 
+        # Check whether a function/method definition with return value
+        # annotation
+        if re.search(r"def .+\)[\s]+->[\s]+[a-zA-Z_][a-zA-Z0-9_]*:$", line):
+            return True
+
     if line.endswith('\\'):
         return True
 

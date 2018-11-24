@@ -252,6 +252,24 @@ y = 1  # x = 3
             ''.join(eradicate.filter_commented_out_code(code,
                                                         aggressive=False)))
 
+    def test_filter_commented_out_code_with_annotation(self):
+        self.assertEqual(
+            '\n\n\n',
+            ''.join(eradicate.filter_commented_out_code("""\
+# class CommentedClass(object):
+#     def __init__(self, prop: int) -> None:
+#         self.property = prop
+
+#     def __str__(self) -> str:
+#         return self.__class__.__name__
+
+#    def set_prop(self, prop: int):
+#        self.prop = prop
+
+#    def get_prop(self):
+#        return self.prop
+""")))
+
     def test_detect_encoding_with_bad_encoding(self):
         with temporary_file('# -*- coding: blah -*-\n') as filename:
             self.assertEqual('latin-1',
