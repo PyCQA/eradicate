@@ -190,6 +190,14 @@ def foo():
 #
 """)))
 
+    def test_commented_out_code_line_numbers_with_for_statement(self):
+        self.assertEqual(
+            [1, 2],
+            list(eradicate.commented_out_code_line_numbers("""\
+# for x in y:
+#     foop = x.ham
+""")))
+
     def test_filter_commented_out_code(self):
         self.assertEqual(
             """\
