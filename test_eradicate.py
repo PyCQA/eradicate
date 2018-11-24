@@ -181,6 +181,15 @@ def foo():
     2
 """)))
 
+    def test_commented_out_code_line_numbers_with_with_statement(self):
+        self.assertEqual(
+            [1, 2],
+            list(eradicate.commented_out_code_line_numbers("""\
+# with open('filename', 'w') as outfile:
+#     json.dump(objects, outfile)
+#
+""")))
+
     def test_filter_commented_out_code(self):
         self.assertEqual(
             """\
