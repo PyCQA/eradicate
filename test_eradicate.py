@@ -185,8 +185,8 @@ def foo():
         self.assertEqual(
             [1, 2],
             list(eradicate.commented_out_code_line_numbers("""\
-# with open('filename', 'w') as outfile:
-#     json.dump(objects, outfile)
+# with open('filename', 'w') as out_file:
+#     json.dump(objects, out_file)
 #
 """)))
 
@@ -195,7 +195,7 @@ def foo():
             [1, 2],
             list(eradicate.commented_out_code_line_numbers("""\
 # for x in y:
-#     foop = x.ham
+#     oops = x.ham
 """)))
 
     def test_filter_commented_out_code(self):

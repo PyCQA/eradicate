@@ -5,6 +5,7 @@ check:
 		--reports=no \
 		--disable=bad-continuation \
 		--disable=invalid-name \
+		--disable=too-many-branches \
 		--disable=too-many-return-statements \
 		--rcfile=/dev/null \
 		eradicate.py setup.py
