@@ -3,5 +3,5 @@
     description: "Apply eradicate"
     entry: eradicate
     language: python
-    files: "\.py$"
+    files: '\.py$'
     args: [--in-place]
