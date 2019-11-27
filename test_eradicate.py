@@ -307,16 +307,14 @@ class SystemTests(unittest.TestCase):
             self.assertEqual("""\
 @@ -1,2 +1 @@
 -# x * 3 == False
- # x is a variable
-""", '\n'.join(output_file.getvalue().split('\n')[2:]))
+ # x is a variable""", '\n'.join(output_file.getvalue().splitlines()[2:]))
 
     def test_recursive(self):
         with temporary_directory() as directory:
 
             with temporary_file("""\
 # x * 3 == False
-# x is a variable
-""", directory=directory):
+# x is a variable""", directory=directory):
 
                 output_file = io.StringIO()
                 eradicate.main(argv=['my_fake_program',
@@ -327,8 +325,7 @@ class SystemTests(unittest.TestCase):
                 self.assertEqual("""\
 @@ -1,2 +1 @@
 -# x * 3 == False
- # x is a variable
-""", '\n'.join(output_file.getvalue().split('\n')[2:]))
+ # x is a variable""", '\n'.join(output_file.getvalue().splitlines()[2:]))
 
     def test_ignore_hidden_directories(self):
         with temporary_directory() as directory:
@@ -337,8 +334,7 @@ class SystemTests(unittest.TestCase):
 
                 with temporary_file("""\
 # x * 3 == False
-# x is a variable
-""", directory=inner_directory):
+# x is a variable""", directory=inner_directory):
 
                     output_file = io.StringIO()
                     eradicate.main(argv=['my_fake_program',
@@ -353,16 +349,14 @@ class SystemTests(unittest.TestCase):
     def test_in_place(self):
         with temporary_file("""\
 # x * 3 == False
-# x is a variable
-""") as filename:
+# x is a variable""") as filename:
             output_file = io.StringIO()
             eradicate.main(argv=['my_fake_program', '--in-place', filename],
                            standard_out=output_file,
                            standard_error=None)
             with open(filename) as f:
                 self.assertEqual("""\
-# x is a variable
-""", f.read())
+# x is a variable""", f.read())
 
     def test_with_missing_file(self):
         output_file = io.StringIO()
@@ -375,16 +369,14 @@ class SystemTests(unittest.TestCase):
     def test_end_to_end(self):
         with temporary_file("""\
 # x * 3 == False
-# x is a variable
-""") as filename:
+# x is a variable""") as filename:
             process = subprocess.Popen([sys.executable,
-                                        './eradicate', filename],
+                                        './eradicate.py', filename],
                                        stdout=subprocess.PIPE)
             self.assertEqual("""\
 @@ -1,2 +1 @@
 -# x * 3 == False
- # x is a variable
-""", '\n'.join(process.communicate()[0].decode().split('\n')[2:]))
+ # x is a variable""", '\n'.join(process.communicate()[0].decode().splitlines()[2:]))
 
 
 @contextlib.contextmanager

@@ -29,8 +29,9 @@ import io
 import os
 import re
 import tokenize
+import sys
 
-__version__ = '1.0'
+__version__ = '1.1'
 
 
 MULTILINE_ASSIGNMENT_REGEX = re.compile(r'^\s*\w+\s*=.*[(\[{]$')
@@ -198,7 +199,7 @@ def detect_encoding(filename):
         return 'latin-1'
 
 
-def main(argv, standard_out, standard_error):
+def main(argv=sys.argv, standard_out=sys.stdout, standard_error=sys.stderr):
     """Main entry point."""
     import argparse
     parser = argparse.ArgumentParser(description=__doc__, prog='eradicate')
@@ -230,3 +231,7 @@ def main(argv, standard_out, standard_error):
                 fix_file(name, args=args, standard_out=standard_out)
             except IOError as exception:
                 print('{}'.format(exception), file=standard_error)
+
+
+if __name__ == "__main__":
+    main()
