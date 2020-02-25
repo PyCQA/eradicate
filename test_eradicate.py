@@ -40,6 +40,9 @@ class UnitTests(unittest.TestCase):
 
         self.assertFalse(eradicate.comment_contains_code(
             '# Issue #999: This is not code'))
+        
+        self.assertFalse(eradicate.comment_contains_code(
+            '# TODO: Refactor this later'))
 
         self.assertTrue(eradicate.comment_contains_code(
             '# x = 1'))
