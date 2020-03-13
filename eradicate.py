@@ -28,6 +28,7 @@ import difflib
 import io
 import os
 import re
+import sys
 import tokenize
 
 __version__ = '1.0'
@@ -174,6 +175,7 @@ def fix_file(filename, args, standard_out):
                 'after/' + filename,
                 lineterm='')
             standard_out.write('\n'.join(list(diff) + ['']))
+        return True
 
 
 def open_with_encoding(filename, encoding, mode='r'):
@@ -216,6 +218,7 @@ def main(argv, standard_out, standard_error):
     args = parser.parse_args(argv[1:])
 
     filenames = list(set(args.files))
+    change_or_error = False
     while filenames:
         name = filenames.pop(0)
         if args.recursive and os.path.isdir(name):
@@ -227,6 +230,9 @@ def main(argv, standard_out, standard_error):
                                   if not d.startswith('.')]
         else:
             try:
-                fix_file(name, args=args, standard_out=standard_out)
+                change_or_error = fix_file(name, args=args, standard_out=standard_out) or change_or_error
             except IOError as exception:
                 print('{}'.format(exception), file=standard_error)
+                change_or_error = True
+    if change_or_error:
+        sys.exit(1)
