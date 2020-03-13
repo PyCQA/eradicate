@@ -211,7 +211,7 @@ def main(argv, standard_out, standard_error):
     parser.add_argument('-a', '--aggressive', action='store_true',
                         help='make more aggressive changes; '
                              'this may result in false positives')
-    parser.add_argument('-e', '--error', action="error",
+    parser.add_argument('-e', '--error', action="store_true",
                         help="Exit code based on result of check")
     parser.add_argument('--version', action='version',
                         version='%(prog)s ' + __version__)
@@ -236,5 +236,5 @@ def main(argv, standard_out, standard_error):
             except IOError as exception:
                 print('{}'.format(exception), file=standard_error)
                 change_or_error = True
-    if change_or_error:
+    if change_or_error and args.error:
         sys.exit(1)
