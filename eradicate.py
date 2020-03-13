@@ -237,4 +237,4 @@ def main(argv, standard_out, standard_error):
                 print('{}'.format(exception), file=standard_error)
                 change_or_error = True
     if change_or_error and args.error:
-        sys.exit(1)
+        return 1

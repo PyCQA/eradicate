@@ -372,6 +372,29 @@ class SystemTests(unittest.TestCase):
                        standard_error=ignore)
         self.assertFalse(output_file.getvalue())
 
+    def test_returns_error_code_if_requested(self):
+        with temporary_file("""\
+    # x * 3 == False
+    # x is a variable
+    """) as filename:
+            output_file = io.StringIO()
+            result = eradicate.main(argv=['my_fake_program', filename, "-e"],
+                               standard_out=output_file,
+                               standard_error=None)
+            self.assertTrue(result)
+
+    def test_returns_None_if_no_error_request(self):
+        with temporary_file("""\
+    # x * 3 == False
+    # x is a variable
+    """) as filename:
+            output_file = io.StringIO()
+            result = eradicate.main(argv=['my_fake_program', filename],
+                               standard_out=output_file,
+                               standard_error=None)
+            self.assertTrue(result is None)
+
+
     def test_end_to_end(self):
         with temporary_file("""\
 # x * 3 == False
