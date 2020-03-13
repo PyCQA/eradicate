@@ -211,6 +211,8 @@ def main(argv, standard_out, standard_error):
     parser.add_argument('-a', '--aggressive', action='store_true',
                         help='make more aggressive changes; '
                              'this may result in false positives')
+    parser.add_argument('-e', '--error', action="error",
+                        help="Exit code based on result of check")
     parser.add_argument('--version', action='version',
                         version='%(prog)s ' + __version__)
     parser.add_argument('files', nargs='+', help='files to format')
