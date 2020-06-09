@@ -148,6 +148,31 @@ class UnitTests(unittest.TestCase):
         self.assertTrue(eradicate.comment_contains_code(
             '# codings=utf-8'))
 
+    def test_comment_contains_code_with_default_whitelist(self):
+        self.assertFalse(eradicate.comment_contains_code('# pylint: disable=A0123'))
+        self.assertFalse(eradicate.comment_contains_code('# pylint:disable=A0123'))
+        self.assertFalse(eradicate.comment_contains_code('# pylint: disable = A0123'))
+        self.assertFalse(eradicate.comment_contains_code('# pylint:disable = A0123'))
+        self.assertFalse(eradicate.comment_contains_code('# pyright: reportErrorName=true'))
+        self.assertFalse(eradicate.comment_contains_code('# noqa'))
+        self.assertFalse(eradicate.comment_contains_code('# NOQA'))
+        self.assertFalse(eradicate.comment_contains_code('# noqa: A123'))
+        self.assertFalse(eradicate.comment_contains_code('# noqa:A123'))
+        self.assertFalse(eradicate.comment_contains_code('# fmt: on'))
+        self.assertFalse(eradicate.comment_contains_code('# fmt: off'))
+        self.assertFalse(eradicate.comment_contains_code('# fmt:on'))
+        self.assertFalse(eradicate.comment_contains_code('# fmt:off'))
+        self.assertFalse(eradicate.comment_contains_code('# type: ignore'))
+        self.assertFalse(eradicate.comment_contains_code('# type:ignore'))
+        self.assertFalse(eradicate.comment_contains_code('# type: ignore[import]'))
+        self.assertFalse(eradicate.comment_contains_code('# type:ignore[import]'))
+        self.assertFalse(eradicate.comment_contains_code('# TODO: Do that'))
+        self.assertFalse(eradicate.comment_contains_code('# FIXME: Fix that'))
+        self.assertFalse(eradicate.comment_contains_code('# XXX: What ever'))
+        self.assertTrue(eradicate.comment_contains_code('# todo: Do that'))
+        self.assertTrue(eradicate.comment_contains_code('# fixme: Fix that'))
+        self.assertTrue(eradicate.comment_contains_code('# xxx: What ever'))
+
     def test_commented_out_code_line_numbers(self):
         self.assertEqual(
             [1, 3],
