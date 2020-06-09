@@ -28,7 +28,6 @@ import difflib
 import io
 import os
 import re
-import sys
 import tokenize
 
 __version__ = '1.0'
