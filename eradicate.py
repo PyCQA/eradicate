@@ -38,8 +38,21 @@ MULTILINE_ASSIGNMENT_REGEX = re.compile(r'^\s*\w+\s*=.*[(\[{]$')
 PARTIAL_DICTIONARY_REGEX = re.compile(r'^\s*[\'"]\w+[\'"]\s*:.+[,{]\s*$')
 
 
+WHITELIST = [
+    r'pylint',
+    r'pyright',
+    r'(?i)noqa',
+    r'type:\s*ignore',
+    r'fmt:\s*(on|off)',
+    r'TODO',
+    r'FIXME',
+    r'XXX'
+]
+
+
 def comment_contains_code(line, aggressive=True):
     """Return True comment contains code."""
+    global WHITELIST
     line = line.lstrip()
     if not line.startswith('#'):
         return False
@@ -50,8 +63,9 @@ def comment_contains_code(line, aggressive=True):
     if re.search('#[0-9]', line):
         return False
 
-    if line.startswith('pylint:'):
-        return False
+    for listed in WHITELIST:
+        if re.search(listed, line):
+            return False
 
     if re.match(r'.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)', line):
         return False
@@ -202,6 +216,7 @@ def detect_encoding(filename):
 
 def main(argv, standard_out, standard_error):
     """Main entry point."""
+    global WHITELIST
     import argparse
     parser = argparse.ArgumentParser(description=__doc__, prog='eradicate')
     parser.add_argument('-i', '--in-place', action='store_true',
@@ -215,9 +230,27 @@ def main(argv, standard_out, standard_error):
                         help="Exit code based on result of check")
     parser.add_argument('--version', action='version',
                         version='%(prog)s ' + __version__)
+    parser.add_argument('--whitelist', action="store",
+                        help=(
+                            'String of "#" separated comment beginnings to whitelist. '
+                            'Single parts are interpreted as regex. '
+                            'OVERWRITING the default whitelist: {}'
+                        ).format(WHITELIST))
+    parser.add_argument('--whitelist-extend', action="store",
+                        help=(
+                            'String of "#" separated comment beginnings to whitelist '
+                            'Single parts are interpreted as regex. '
+                            'Overwrites --whitelist. '
+                            'EXTENDING the default whitelist: {} '
+                        ).format(WHITELIST))
     parser.add_argument('files', nargs='+', help='files to format')
 
     args = parser.parse_args(argv[1:])
+
+    if args.whitelist_extend:
+        WHITELIST += args.whitelist_extend.split('#')
+    elif args.whitelist:
+        WHITELIST = args.whitelist.split('#')
 
     filenames = list(set(args.files))
     change_or_error = False
