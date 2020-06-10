@@ -211,6 +211,17 @@ class Eradicator:
         except (SyntaxError, LookupError, UnicodeDecodeError):
             return 'latin-1'
 
+    def update_whitelist(self, new_whitelist, extend_default=True):
+        """Updates the whitelist."""
+        if extend_default:
+            self.WHITELIST_REGEX = re.compile(
+                r'|'.join(self.DEFAULT_WHITELIST + new_whitelist),
+                flags=re.IGNORECASE)
+        else:
+            self.WHITELIST_REGEX = re.compile(
+                r'|'.join(new_whitelist),
+                flags=re.IGNORECASE)
+
 
 def main(argv, standard_out, standard_error):
     """Main entry point."""
@@ -247,13 +258,9 @@ def main(argv, standard_out, standard_error):
     eradicator = Eradicator()
 
     if args.whitelist_extend:
-        eradicator.WHITELIST_REGEX = re.compile(
-            r'|'.join(eradicator.DEFAULT_WHITELIST + args.whitelist_extend.split('#')),
-            flags=re.IGNORECASE)
+        eradicator.update_whitelist(args.whitelist_extend.split('#'), True)
     elif args.whitelist:
-        eradicator.WHITELIST_REGEX = re.compile(
-            r'|'.join(args.whitelist.split('#')),
-            flags=re.IGNORECASE)
+        eradicator.update_whitelist(args.whitelist.split('#'), False)
 
     filenames = list(set(args.files))
     change_or_error = False
