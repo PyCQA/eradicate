@@ -10,7 +10,10 @@ import subprocess
 import sys
 import tempfile
 import unittest
-import unittest.mock as mock
+try:
+    import unittest.mock as mock
+except ModuleNotFoundError:
+    import mock
 import re
 
 import eradicate
