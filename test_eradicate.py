@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import unittest.mock as mock
 import re
 
 import eradicate
@@ -484,6 +485,26 @@ class SystemTests(unittest.TestCase):
 -# x * 3 == False
  # x is a variable
 """, '\n'.join(process.communicate()[0].decode().split('\n')[2:]))
+
+    def test_whitelist(self):
+        mock_update = mock.Mock()
+        with mock.patch.object(eradicate.Eradicator, 'update_whitelist', mock_update):
+            with temporary_file("# empty") as filename:
+                result = eradicate.main(argv=['my_fake_program', '--whitelist', 'foo# bar', filename],
+                                   standard_out=None,
+                                   standard_error=None)
+            self.assertTrue(result is None)
+            mock_update.assert_called_once_with(["foo", " bar"], False)
+
+    def test_whitelist_extend(self):
+        mock_update = mock.Mock()
+        with mock.patch.object(eradicate.Eradicator, 'update_whitelist', mock_update):
+            with temporary_file("# empty") as filename:
+                result = eradicate.main(argv=['my_fake_program', '--whitelist-extend', 'foo #bar', filename],
+                                   standard_out=None,
+                                   standard_error=None)
+            self.assertTrue(result is None)
+            mock_update.assert_called_once_with(["foo ", "bar"], True)
 
 
 @contextlib.contextmanager
