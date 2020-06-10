@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import re
 
 import eradicate
 
@@ -354,6 +355,20 @@ y = 1  # x = 3
             self.assertEqual('latin-1',
                              eradicate.Eradicator().detect_encoding(filename))
 
+    def test_extend_whitelist(self):
+        eradicator = eradicate.Eradicator()
+        eradicator.update_whitelist(["foo"], True)
+        self.assertTrue(
+            eradicator.WHITELIST_REGEX == re.compile(
+                r'|'.join(eradicator.DEFAULT_WHITELIST + ["foo"]), flags=re.IGNORECASE
+            )
+        )
+
+    def test_update_whitelist(self):
+        eradicator = eradicate.Eradicator()
+        eradicator.update_whitelist(["foo"], False)
+        self.assertTrue(eradicator.WHITELIST_REGEX == re.compile("foo", flags=re.IGNORECASE))
+
 
 class SystemTests(unittest.TestCase):
 
@@ -455,7 +470,6 @@ class SystemTests(unittest.TestCase):
                                standard_out=output_file,
                                standard_error=None)
             self.assertTrue(result is None)
-
 
     def test_end_to_end(self):
         with temporary_file("""\
