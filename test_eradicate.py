@@ -17,203 +17,203 @@ import eradicate
 class UnitTests(unittest.TestCase):
 
     def test_comment_contains_code(self):
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '#'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# This is a (real) comment.'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# 123'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# 123.1'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# 1, 2, 3'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             'x = 1  # x = 1'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# pylint: disable=redefined-outer-name'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# Issue #999: This is not code'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '# x = 1'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#from foo import eradicate'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#import eradicate'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#"key": value,'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#"key": "value",'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#"key": 1 + 1,'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             "#'key': 1 + 1,"))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#"key": {'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#}'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#} )]'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#},'))
 
     def test_comment_contains_code_with_print(self):
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#print'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#print(1)'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#print 1'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '#to print'))
 
     def test_comment_contains_code_with_return(self):
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#return x'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '#to return'))
 
     def test_comment_contains_code_with_multi_line(self):
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#def foo():'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#else:'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#  else  :  '))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '# "foo %d" % \\'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#elif True:'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#x = foo('))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '#except Exception:'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# this is = to that :('))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '#else'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '#or else:'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '#else True:'))
 
     def test_comment_contains_code_with_sentences(self):
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '#code is good'))
 
     def test_comment_contains_code_with_encoding(self):
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# coding=utf-8'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '#coding= utf-8'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# coding: utf-8'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# encoding: utf8'))
 
-        self.assertTrue(eradicate.comment_contains_code(
+        self.assertTrue(eradicate.Eradicator().comment_contains_code(
             '# codings=utf-8'))
 
     def test_comment_contains_code_with_default_whitelist(self):
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# pylint: disable=A0123'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# pylint:disable=A0123'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# pylint: disable = A0123'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# pylint:disable = A0123'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# pyright: reportErrorName=true'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# noqa'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# NOQA'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# noqa: A123'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# noqa:A123'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# fmt: on'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# fmt: off'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# fmt:on'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# fmt:off'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# type: ignore'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# type:ignore'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# type: ignore[import]'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# type:ignore[import]'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# TODO: Do that'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# FIXME: Fix that'))
 
-        self.assertFalse(eradicate.comment_contains_code(
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# XXX: What ever'))
 
 
     def test_commented_out_code_line_numbers(self):
         self.assertEqual(
             [1, 3],
-            list(eradicate.commented_out_code_line_numbers(
+            list(eradicate.Eradicator().commented_out_code_line_numbers(
                 """\
 # print(5)
 # This is a comment.
@@ -228,7 +228,7 @@ y = 1  # x = 3
     def test_commented_out_code_line_numbers_with_errors(self):
         self.assertEqual(
             [1, 3],
-            list(eradicate.commented_out_code_line_numbers(
+            list(eradicate.Eradicator().commented_out_code_line_numbers(
                 """\
 # print(5)
 # This is a comment.
@@ -246,7 +246,7 @@ def foo():
     def test_commented_out_code_line_numbers_with_with_statement(self):
         self.assertEqual(
             [1, 2],
-            list(eradicate.commented_out_code_line_numbers("""\
+            list(eradicate.Eradicator().commented_out_code_line_numbers("""\
 # with open('filename', 'w') as out_file:
 #     json.dump(objects, out_file)
 #
@@ -255,7 +255,7 @@ def foo():
     def test_commented_out_code_line_numbers_with_for_statement(self):
         self.assertEqual(
             [1, 2],
-            list(eradicate.commented_out_code_line_numbers("""\
+            list(eradicate.Eradicator().commented_out_code_line_numbers("""\
 # for x in y:
 #     oops = x.ham
 """)))
@@ -270,7 +270,7 @@ y = 1  # x = 3
 # The below is another comment.
 # 3 / 2 + 21
 """,
-            ''.join(eradicate.filter_commented_out_code(
+            ''.join(eradicate.Eradicator().filter_commented_out_code(
                 """\
 # print(5)
 # This is a comment.
@@ -295,7 +295,7 @@ if False: \\
 """
         self.assertEqual(
             line,
-            ''.join(eradicate.filter_commented_out_code(line)))
+            ''.join(eradicate.Eradicator().filter_commented_out_code(line)))
 
     def test_filter_commented_out_code_with_larger_example(self):
         self.assertEqual(
@@ -307,7 +307,7 @@ y = 1  # x = 3
 # The below is another comment.
 # 3 / 2 + 21
 """,
-            ''.join(eradicate.filter_commented_out_code(
+            ''.join(eradicate.Eradicator().filter_commented_out_code(
                 """\
 # print(5)
 # This is a comment.
@@ -328,13 +328,13 @@ y = 1  # x = 3
 """
         self.assertEqual(
             code,
-            ''.join(eradicate.filter_commented_out_code(code,
+            ''.join(eradicate.Eradicator().filter_commented_out_code(code,
                                                         aggressive=False)))
 
     def test_filter_commented_out_code_with_annotation(self):
         self.assertEqual(
             '\n\n\n',
-            ''.join(eradicate.filter_commented_out_code("""\
+            ''.join(eradicate.Eradicator().filter_commented_out_code("""\
 # class CommentedClass(object):
 #     def __init__(self, prop: int) -> None:
 #         self.property = prop
@@ -352,7 +352,7 @@ y = 1  # x = 3
     def test_detect_encoding_with_bad_encoding(self):
         with temporary_file('# -*- coding: blah -*-\n') as filename:
             self.assertEqual('latin-1',
-                             eradicate.detect_encoding(filename))
+                             eradicate.Eradicator().detect_encoding(filename))
 
 
 class SystemTests(unittest.TestCase):
