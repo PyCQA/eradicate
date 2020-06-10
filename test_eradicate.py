@@ -10,10 +10,10 @@ import subprocess
 import sys
 import tempfile
 import unittest
-try:
-    import unittest.mock as mock
-except ModuleNotFoundError:
+try:  # pragma: no cover
     import mock
+except ModuleNotFoundError:  # pragma: no cover
+    import unittest.mock as mock
 import re
 
 import eradicate
