@@ -364,7 +364,7 @@ y = 1  # x = 3
         eradicator.update_whitelist(["foo"], True)
         self.assertTrue(
             eradicator.WHITELIST_REGEX == re.compile(
-                r'|'.join(eradicator.DEFAULT_WHITELIST + ["foo"]), flags=re.IGNORECASE
+                r'|'.join(list(eradicator.DEFAULT_WHITELIST) + ["foo"]), flags=re.IGNORECASE
             )
         )
 
