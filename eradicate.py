@@ -47,7 +47,7 @@ class Eradicator(object):
     CODE_KEYWORDS = [r'elif\s+.*', 'else', 'try', 'finally', r'except\s+.*']
     CODE_KEYWORDS_AGGR = CODE_KEYWORDS + [r'if\s+.*']
 
-    DEFAULT_WHITELIST = [
+    DEFAULT_WHITELIST = (
         r'pylint',
         r'pyright',
         r'noqa',
@@ -56,7 +56,7 @@ class Eradicator(object):
         r'TODO',
         r'FIXME',
         r'XXX'
-    ]
+    )
     WHITELIST_REGEX = re.compile(r'|'.join(DEFAULT_WHITELIST), flags=re.IGNORECASE)
 
     def comment_contains_code(self, line, aggressive=True):
@@ -220,7 +220,7 @@ class Eradicator(object):
         """Updates the whitelist."""
         if extend_default:
             self.WHITELIST_REGEX = re.compile(
-                r'|'.join(self.DEFAULT_WHITELIST + new_whitelist),
+                r'|'.join(list(self.DEFAULT_WHITELIST) + new_whitelist),
                 flags=re.IGNORECASE)
         else:
             self.WHITELIST_REGEX = re.compile(
