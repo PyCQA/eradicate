@@ -34,18 +34,21 @@ __version__ = '1.0'
 
 class Eradicator(object):
     """Eradicate comments."""
+    BRACKET_REGEX = re.compile(r'^[()\[\]{}\s]+$')
+    CODING_COMMENT_REGEX = re.compile(r'.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)')
+    DEF_STATEMENT_REGEX = re.compile(r"def .+\)[\s]+->[\s]+[a-zA-Z_][a-zA-Z0-9_]*:$")
+    FOR_STATEMENT_REGEX = re.compile(r"for [a-zA-Z_][a-zA-Z0-9_]* in .+:$")
+    HASH_NUMBER = re.compile(r'#[0-9]')
     MULTILINE_ASSIGNMENT_REGEX = re.compile(r'^\s*\w+\s*=.*[(\[{]$')
     PARTIAL_DICTIONARY_REGEX = re.compile(r'^\s*[\'"]\w+[\'"]\s*:.+[,{]\s*$')
-    CODING_COMMENT_REGEX = re.compile(r'.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)')
-
-    DEF_STATEMENT_REGEX = re.compile(r"def .+\)[\s]+->[\s]+[a-zA-Z_][a-zA-Z0-9_]*:$")
+    PRINT_RETURN_REGEX = re.compile(r'^(print|return)\b\s*')
     WITH_STATEMENT_REGEX = re.compile(r"with .+ as [a-zA-Z_][a-zA-Z0-9_]*:$")
-    FOR_STATEMENT_REGEX = re.compile(r"for [a-zA-Z_][a-zA-Z0-9_]* in .+:$")
 
-    CODE_INDICATORS = list('()[]{}:=%') + ['print', 'return', 'break', 'continue',
-                                           'import']
+    CODE_INDICATORS = ['(', ')', '[', ']', '{', '}', ':', '=', '%',
+                       'print', 'return', 'break', 'continue', 'import']
     CODE_KEYWORDS = [r'elif\s+.*', 'else', 'try', 'finally', r'except\s+.*']
     CODE_KEYWORDS_AGGR = CODE_KEYWORDS + [r'if\s+.*']
+    WHITESPACE_HASH = ' \t\v\n#'
 
     DEFAULT_WHITELIST = (
         r'pylint',
@@ -65,10 +68,10 @@ class Eradicator(object):
         if not line.startswith('#'):
             return False
 
-        line = line.lstrip(' \t\v\n#').strip()
+        line = line.lstrip(self.WHITESPACE_HASH).strip()
 
         # Ignore non-comment related hashes. For example, "# Issue #999".
-        if re.search('#[0-9]', line):
+        if self.HASH_NUMBER.search(line):
             return False
 
         # Ignore whitelisted comments
@@ -92,7 +95,7 @@ class Eradicator(object):
             if re.match(r'^\s*' + symbol + r'\s*:\s*$', line):
                 return True
 
-        line = re.sub(r'^(print|return)\b\s*', '', line)
+        line = self.PRINT_RETURN_REGEX.sub('', line)
 
         if self.PARTIAL_DICTIONARY_REGEX.match(line):
             return True
@@ -134,7 +137,7 @@ class Eradicator(object):
         if self.MULTILINE_ASSIGNMENT_REGEX.match(line):
             return True
 
-        if re.match(r'^[()\[\]{}\s]+$', line):
+        if self.BRACKET_REGEX.match(line):
             return True
 
         return False
