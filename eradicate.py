@@ -38,7 +38,7 @@ class Eradicator(object):
     PARTIAL_DICTIONARY_REGEX = re.compile(r'^\s*[\'"]\w+[\'"]\s*:.+[,{]\s*$')
     CODING_COMMENT_REGEX = re.compile(r'.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)')
 
-    DEF_STATEMENT_REGEX = re.complie(r"def .+\)[\s]+->[\s]+[a-zA-Z_][a-zA-Z0-9_]*:$")
+    DEF_STATEMENT_REGEX = re.compile(r"def .+\)[\s]+->[\s]+[a-zA-Z_][a-zA-Z0-9_]*:$")
     WITH_STATEMENT_REGEX = re.compile(r"with .+ as [a-zA-Z_][a-zA-Z0-9_]*:$")
     FOR_STATEMENT_REGEX = re.compile(r"for [a-zA-Z_][a-zA-Z0-9_]* in .+:$")
 
