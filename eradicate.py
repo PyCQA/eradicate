@@ -94,7 +94,7 @@ class Eradicator(object):
 
         line = re.sub(r'^(print|return)\b\s*', '', line)
 
-        if re.match(self.PARTIAL_DICTIONARY_REGEX, line):
+        if self.PARTIAL_DICTIONARY_REGEX.match(line):
             return True
 
         try:
@@ -117,21 +117,21 @@ class Eradicator(object):
 
             # Check whether a function/method definition with return value
             # annotation
-            if DEF_STATEMENT_REGEX.search(line):
+            if self.DEF_STATEMENT_REGEX.search(line):
                 return True
 
             # Check weather a with statement
-            if WITH_STATEMENT_REGEX.search(line):
+            if self.WITH_STATEMENT_REGEX.search(line):
                 return True
 
             # Check weather a for statement
-            if FOR_STATEMENT_REGEX.search(line):
+            if self.FOR_STATEMENT_REGEX.search(line):
                 return True
 
         if line.endswith('\\'):
             return True
 
-        if MULTILINE_ASSIGNMENT_REGEX.match(line):
+        if self.MULTILINE_ASSIGNMENT_REGEX.match(line):
             return True
 
         if re.match(r'^[()\[\]{}\s]+$', line):
