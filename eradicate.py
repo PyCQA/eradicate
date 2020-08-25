@@ -32,10 +32,20 @@ import tokenize
 
 __version__ = '1.0'
 
-class Eradicator:
+class Eradicator(object):
     """Eradicate comments."""
     MULTILINE_ASSIGNMENT_REGEX = re.compile(r'^\s*\w+\s*=.*[(\[{]$')
     PARTIAL_DICTIONARY_REGEX = re.compile(r'^\s*[\'"]\w+[\'"]\s*:.+[,{]\s*$')
+    CODING_COMMENT_REGEX = re.compile(r'.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)')
+
+    DEF_STATEMENT_REGEX = re.complie(r"def .+\)[\s]+->[\s]+[a-zA-Z_][a-zA-Z0-9_]*:$")
+    WITH_STATEMENT_REGEX = re.compile(r"with .+ as [a-zA-Z_][a-zA-Z0-9_]*:$")
+    FOR_STATEMENT_REGEX = re.compile(r"for [a-zA-Z_][a-zA-Z0-9_]* in .+:$")
+
+    CODE_INDICATORS = list('()[]{}:=%') + ['print', 'return', 'break', 'continue',
+                                           'import']
+    CODE_KEYWORDS = [r'elif\s+.*', 'else', 'try', 'finally', r'except\s+.*']
+    CODE_KEYWORDS_AGGR = CODE_KEYWORDS + [r'if\s+.*']
 
     DEFAULT_WHITELIST = [
         r'pylint',
@@ -65,12 +75,11 @@ class Eradicator:
         if self.WHITELIST_REGEX.search(line):
             return False
 
-        if re.match(r'.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)', line):
+        if self.CODING_COMMENT_REGEX.match(line):
             return False
 
         # Check that this is possibly code.
-        for symbol in list('()[]{}:=%') + ['print', 'return', 'break', 'continue',
-                                           'import']:
+        for symbol in self.CODE_INDICATORS:
             if symbol in line:
                 break
         else:
@@ -79,12 +88,7 @@ class Eradicator:
         if self.multiline_case(line, aggressive=aggressive):
             return True
 
-        symbol_list = [r'elif\s+.*', 'else', 'try',
-                       'finally', r'except\s+.*']
-        if aggressive:
-            symbol_list.append(r'if\s+.*')
-
-        for symbol in symbol_list:
+        for symbol in self.CODE_KEYWORDS_AGGR if aggressive else self.CODE_KEYWORDS:
             if re.match(r'^\s*' + symbol + r'\s*:\s*$', line):
                 return True
 
@@ -95,9 +99,10 @@ class Eradicator:
 
         try:
             compile(line, '<string>', 'exec')
-            return True
         except (SyntaxError, TypeError, UnicodeDecodeError):
             return False
+        else:
+            return True
 
 
     def multiline_case(self, line, aggressive=True):
@@ -112,21 +117,21 @@ class Eradicator:
 
             # Check whether a function/method definition with return value
             # annotation
-            if re.search(r"def .+\)[\s]+->[\s]+[a-zA-Z_][a-zA-Z0-9_]*:$", line):
+            if DEF_STATEMENT_REGEX.search(line):
                 return True
 
             # Check weather a with statement
-            if re.search(r"with .+ as [a-zA-Z_][a-zA-Z0-9_]*:$", line):
+            if WITH_STATEMENT_REGEX.search(line):
                 return True
 
             # Check weather a for statement
-            if re.search(r"for [a-zA-Z_][a-zA-Z0-9_]* in .+:$", line):
+            if FOR_STATEMENT_REGEX.search(line):
                 return True
 
         if line.endswith('\\'):
             return True
 
-        if re.match(self.MULTILINE_ASSIGNMENT_REGEX, line):
+        if MULTILINE_ASSIGNMENT_REGEX.match(line):
             return True
 
         if re.match(r'^[()\[\]{}\s]+$', line):
