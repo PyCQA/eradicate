@@ -60,6 +60,17 @@ After running ``eradicate``.
         return False
 
 
+Whitelisting
+============
+
+False positives can happen so there is a whitelist feature to fix them shorthand.
+You can either add entries to the default whitelist with ``--whitelist-extend`` or overwrite the default with ``--whitelist``.
+Both arguments expect a string of ``#`` separated regex strings (whitespaces are preserved). E.g. ``eradicate --whitelist "foo#b a r" filename``
+Those regex strings are matched case insensitive against the start of the comment itself.
+
+For the default whitelist please see ``eradicate.py``.
+
+
 Related
 =======
 
