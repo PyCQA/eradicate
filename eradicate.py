@@ -30,7 +30,8 @@ import os
 import re
 import tokenize
 
-__version__ = '1.0'
+__version__ = '2.0.0'
+
 
 class Eradicator(object):
     """Eradicate comments."""
