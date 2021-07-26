@@ -6,6 +6,8 @@ eradicate
     :target: https://travis-ci.org/myint/eradicate
     :alt: Build status
 
+----
+
 ``eradicate`` removes commented-out code from Python files.
 
 
@@ -23,7 +25,7 @@ which is valid Python syntax, but is probably not code.)
 Example
 =======
 
-::
+.. code-block:: bash
 
     $ eradicate --in-place example.py
 
@@ -56,3 +58,22 @@ After running ``eradicate``.
 
         # This is a real comment.
         return False
+
+
+Whitelisting
+============
+
+False positives can happen so there is a whitelist feature to fix them shorthand.
+You can either add entries to the default whitelist with ``--whitelist-extend`` or overwrite the default with ``--whitelist``.
+Both arguments expect a string of ``#`` separated regex strings (whitespaces are preserved). E.g. ``eradicate --whitelist "foo#b a r" filename``
+Those regex strings are matched case insensitive against the start of the comment itself.
+
+For the default whitelist please see ``eradicate.py``.
+
+
+Related
+=======
+
+There are different tools, plugins, and integrations for ``eradicate`` users:
+
+- `flake8-eradicate <https://github.com/sobolevn/flake8-eradicate>`_ - Flake8 plugin to find commented out or dead code.
