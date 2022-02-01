@@ -55,6 +55,7 @@ class Eradicator(object):
         r'pylint',
         r'pyright',
         r'noqa',
+        r'nosec',
         r'type:\s*ignore',
         r'fmt:\s*(on|off)',
         r'TODO',
