@@ -57,6 +57,7 @@ class Eradicator(object):
         r'noqa',
         r'type:\s*ignore',
         r'fmt:\s*(on|off)',
+        r'isort:\s*(on|off|skip|skip_file|split|dont-add-imports(:\s*\[.*?\])?)',
         r'TODO',
         r'FIXME',
         r'XXX'
