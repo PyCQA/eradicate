@@ -3,9 +3,10 @@ name: Test
 
 on:
   workflow_dispatch:
-  pull_request:
+  push:
     branches:
-      - "**"
+      - master
+  pull_request:
 
 jobs:
   tests:
@@ -19,21 +20,16 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Set up python version ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Print full Python version
-        id: print-python-version
-        run: echo ::set-output name=version::$(python -c "import sys; print(sys.version_info)")
+      - name: Install project and deps
+        run: |
+          python setup.py install
+          pip install "mock; python_version>='2.7' and python_version<'2.8'"
 
-      - name: Install project
-        run: python setup.py install
-
-      - name: Install mock
-        run: pip install "mock; python_version>='2.7' and python_version<'2.8'"
-
-      - name: Run test file
+      - name: Run tests
         run: python test_eradicate.py
 
 
@@ -41,26 +37,18 @@ jobs:
     name: Run tests with coverage
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
 
-      - name: Print full Python version
-        id: print-python-version
-        run: echo ::set-output name=version::$(python -c "import sys; print(sys.version_info)")
-
-      - name: Install project
-        run: python setup.py install
-
-      - name: Install mock
-        run: pip install "mock; python_version>='2.7' and python_version<'2.8'"
-
-      - name: Install coverage
-        run: pip install coverage
+      - name: Install project and deps
+        run: |
+          python setup.py install
+          pip install "mock; python_version>='2.7' and python_version<'2.8'"
+          pip install coverage
 
       - name: Run test with coverage
-        run: coverage run --include='eradicate.py,test_eradicate.py' test_eradicate.py
-
-      - name: Report coverage result
-        run: coverage report --show-missing
+        run: |
+          coverage run --include='eradicate.py,test_eradicate.py' test_eradicate.py
+          coverage report --show-missing
