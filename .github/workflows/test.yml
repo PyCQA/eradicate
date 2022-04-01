@@ -73,8 +73,3 @@ jobs:
 
       - name: Report coverage result
         run: coverage report --show-missing
-
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
