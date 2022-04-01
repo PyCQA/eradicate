@@ -2,8 +2,8 @@
 eradicate
 =========
 
-.. image:: https://travis-ci.org/myint/eradicate.svg?branch=master
-    :target: https://travis-ci.org/myint/eradicate
+.. image:: https://github.com/myint/eradicate/actions/workflows/test.yml/badge.svg
+    :target: https://github.com/myint/eradicate/actions/workflows/test.yml
     :alt: Build status
 
 ----
