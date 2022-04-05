@@ -182,6 +182,9 @@ class UnitTests(unittest.TestCase):
             '# noqa:A123'))
 
         self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# nosec'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# fmt: on'))
 
         self.assertFalse(eradicate.Eradicator().comment_contains_code(
