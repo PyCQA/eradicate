@@ -58,7 +58,7 @@ class Eradicator(object):
         r'nosec',
         r'type:\s*ignore',
         r'fmt:\s*(on|off)',
-        r'yapf\s*(enable|disable)',
+        r'yapf:\s*(enable|disable)',
         r'isort:\s*(on|off|skip|skip_file|split|dont-add-imports(:\s*\[.*?\])?)',
         r'TODO',
         r'FIXME',
