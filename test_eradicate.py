@@ -197,6 +197,18 @@ class UnitTests(unittest.TestCase):
             '# fmt:off'))
 
         self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# yapf: enable'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# yapf: disable'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# yapf:enable'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# yapf:disable'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# isort: on'))
 
         self.assertFalse(eradicate.Eradicator().comment_contains_code(
