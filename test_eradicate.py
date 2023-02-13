@@ -269,6 +269,15 @@ class UnitTests(unittest.TestCase):
             '# type:ignore[import]'))
 
         self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# mypy: ignore-errors'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# mypy: disable-error-code=['))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# mypy: warn-unreachable, strict-optional'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# TODO: Do that'))
 
         self.assertFalse(eradicate.Eradicator().comment_contains_code(
