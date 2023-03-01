@@ -24,6 +24,7 @@ with open('README.rst') as readme:
         long_description=readme.read(),
         license='Expat License',
         author='Steven Myint',
+        maintainer='Nikita Sobolev <mail@sobolevn.me>',
         url='https://github.com/myint/eradicate',
         classifiers=['Environment :: Console',
                      'Intended Audience :: Developers',
