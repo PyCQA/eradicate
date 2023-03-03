@@ -182,6 +182,9 @@ class UnitTests(unittest.TestCase):
             '# noqa:A123'))
 
         self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# nosec'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# fmt: on'))
 
         self.assertFalse(eradicate.Eradicator().comment_contains_code(
@@ -194,6 +197,66 @@ class UnitTests(unittest.TestCase):
             '# fmt:off'))
 
         self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# yapf: enable'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# yapf: disable'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# yapf:enable'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# yapf:disable'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort: on'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort:on'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort: off'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort:off'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort: skip'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort:skip'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort: skip_file'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort:skip_file'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort: split'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort:split'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort: dont-add-imports'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort:dont-add-imports'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort: dont-add-imports: ["import os"]'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort:dont-add-imports: ["import os"]'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort: dont-add-imports:["import os"]'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# isort:dont-add-imports:["import os"]'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# type: ignore'))
 
         self.assertFalse(eradicate.Eradicator().comment_contains_code(
@@ -204,6 +267,15 @@ class UnitTests(unittest.TestCase):
 
         self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# type:ignore[import]'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# mypy: ignore-errors'))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# mypy: disable-error-code=['))
+
+        self.assertFalse(eradicate.Eradicator().comment_contains_code(
+            '# mypy: warn-unreachable, strict-optional'))
 
         self.assertFalse(eradicate.Eradicator().comment_contains_code(
             '# TODO: Do that'))

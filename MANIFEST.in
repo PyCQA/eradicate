@@ -1,4 +1,4 @@
 include MANIFEST.in
 include README.rst
 exclude Makefile
-exclude test_eradicate.py
+include test_eradicate.py

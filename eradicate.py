@@ -31,7 +31,7 @@ import re
 import tokenize
 import sys
 
-__version__ = '2.0.0'
+__version__ = '2.2.0'
 
 
 class Eradicator(object):
@@ -56,8 +56,12 @@ class Eradicator(object):
         r'pylint',
         r'pyright',
         r'noqa',
+        r'nosec',
         r'type:\s*ignore',
+        r'mypy:',
         r'fmt:\s*(on|off)',
+        r'yapf:\s*(enable|disable)',
+        r'isort:\s*(on|off|skip|skip_file|split|dont-add-imports(:\s*\[.*?\])?)',
         r'TODO',
         r'FIXME',
         r'XXX'
