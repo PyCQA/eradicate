@@ -25,7 +25,7 @@ with open('README.rst') as readme:
         license='Expat License',
         author='Steven Myint',
         maintainer='Nikita Sobolev <mail@sobolevn.me>',
-        url='https://github.com/wemake-services/eradicate',
+        url='https://github.com/myint/eradicate',
         classifiers=['Environment :: Console',
                      'Intended Audience :: Developers',
                      'License :: OSI Approved :: MIT License',
