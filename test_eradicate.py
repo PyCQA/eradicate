@@ -552,14 +552,18 @@ class SystemTests(unittest.TestCase):
 # x * 3 == False
 # x is a variable
 """) as filename:
-            process = subprocess.Popen([sys.executable,
-                                        './eradicate', filename],
-                                       stdout=subprocess.PIPE, universal_newlines=True)
+            process = subprocess.Popen([sys.executable, '-m'
+                                        'eradicate', filename],
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE,
+                                       universal_newlines=True)
+            out, err = process.communicate()
             self.assertEqual("""\
 @@ -1,2 +1 @@
 -# x * 3 == False
  # x is a variable""",
-            '\n'.join(process.communicate()[0].splitlines()[2:]))
+            '\n'.join(out.splitlines()[2:]))
+            self.assertEqual(err, '')
 
     def test_whitelist(self):
         mock_update = mock.Mock()

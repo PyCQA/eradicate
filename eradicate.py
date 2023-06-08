@@ -27,8 +27,15 @@ from __future__ import unicode_literals
 import difflib
 import io
 import os
+import sys
 import re
 import tokenize
+
+try:
+    detect_encoding = tokenize.detect_encoding
+except AttributeError:
+    from lib2to3.pgen2 import tokenize as lib2to3_tokenize
+    detect_encoding = lib2to3_tokenize.detect_encoding
 
 __version__ = '2.2.0'
 
@@ -213,8 +220,7 @@ class Eradicator(object):
         """Return file encoding."""
         try:
             with open(filename, 'rb') as input_file:
-                from lib2to3.pgen2 import tokenize as lib2to3_tokenize
-                encoding = lib2to3_tokenize.detect_encoding(input_file.readline)[0]
+                encoding = detect_encoding(input_file.readline)[0]
 
                 # Check for correctness of encoding.
                 with self.open_with_encoding(filename, encoding) as input_file:
@@ -236,7 +242,7 @@ class Eradicator(object):
                 flags=re.IGNORECASE)
 
 
-def main(argv, standard_out, standard_error):
+def main(argv=sys.argv, standard_out=sys.stdout, standard_error=sys.stderr):
     """Main entry point."""
     import argparse
     parser = argparse.ArgumentParser(description=__doc__, prog='eradicate')
@@ -292,5 +298,10 @@ def main(argv, standard_out, standard_error):
             except IOError as exception:
                 print('{}'.format(exception), file=standard_error)
                 change_or_error = True
+
     if change_or_error and args.error:
         return 1
+
+
+if __name__ == '__main__':
+    main()
