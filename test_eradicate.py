@@ -554,12 +554,12 @@ class SystemTests(unittest.TestCase):
 """) as filename:
             process = subprocess.Popen([sys.executable,
                                         './eradicate', filename],
-                                       stdout=subprocess.PIPE)
+                                       stdout=subprocess.PIPE, universal_newlines=True)
             self.assertEqual("""\
 @@ -1,2 +1 @@
 -# x * 3 == False
  # x is a variable
-""", '\n'.join(process.communicate()[0].decode().split('\n')[2:]))
+""", '\n'.join(process.communicate()[0].decode().splitlines()[2:]))
 
     def test_whitelist(self):
         mock_update = mock.Mock()
