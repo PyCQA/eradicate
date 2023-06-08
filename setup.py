@@ -25,7 +25,7 @@ with open('README.rst') as readme:
         license='Expat License',
         author='Steven Myint',
         maintainer='Nikita Sobolev <mail@sobolevn.me>',
-        url='https://github.com/myint/eradicate',
+        url='https://github.com/wemake-services/eradicate',
         classifiers=['Environment :: Console',
                      'Intended Audience :: Developers',
                      'License :: OSI Approved :: MIT License',
@@ -34,4 +34,9 @@ with open('README.rst') as readme:
                      'Topic :: Software Development :: Quality Assurance'],
         keywords='clean, format, commented-out code',
         py_modules=['eradicate'],
-        scripts=['eradicate'])
+        entry_points={
+            'console_scripts': [
+                'eradicate = eradicate:main',
+            ],
+        },
+    )
