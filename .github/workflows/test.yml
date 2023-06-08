@@ -39,7 +39,11 @@ jobs:
           pip install .
 
       - name: Run tests
-        run: python test_eradicate.py
+        run: |
+          python test_eradicate.py
+          # Integration:
+          python -m eradicate setup.py
+          eradicate setup.py
 
 
   coverage:
@@ -61,6 +65,7 @@ jobs:
           coverage run --include='eradicate.py,test_eradicate.py' test_eradicate.py
           coverage report --show-missing
 
+
   windows:
     name: Tests with python ${{ matrix.python-version }} on Windows
     runs-on: windows-latest
@@ -81,7 +86,12 @@ jobs:
         run: python setup.py install
 
       - name: Run tests
-        run: python test_eradicate.py
+        run: |
+          python test_eradicate.py
+          # Integration:
+          python -m eradicate setup.py
+          eradicate setup.py
+
 
   python2:
     name: Tests with python ${{ matrix.python-version }}
