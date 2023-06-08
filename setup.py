@@ -34,4 +34,9 @@ with open('README.rst') as readme:
                      'Topic :: Software Development :: Quality Assurance'],
         keywords='clean, format, commented-out code',
         py_modules=['eradicate'],
-        scripts=['eradicate'])
+        entry_points={
+            'console_scripts': [
+                'eradicate = eradicate:main',
+            ],
+        },
+    )
