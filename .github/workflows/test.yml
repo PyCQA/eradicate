@@ -16,8 +16,6 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "2.7"
-
           - "3.7"
           - "3.8"
           - "3.9"
@@ -37,8 +35,8 @@ jobs:
 
       - name: Install project and deps
         run: |
-          python setup.py install
           pip install "mock; python_version>='2.7' and python_version<'2.8'"
+          pip install .
 
       - name: Run tests
         run: python test_eradicate.py
@@ -81,6 +79,30 @@ jobs:
 
       - name: Install project and deps
         run: python setup.py install
+
+      - name: Run tests
+        run: python test_eradicate.py
+
+  python2:
+    name: Tests with python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - "2.7"
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up python version ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install project and deps
+        run: |
+          pip install mock
+          python setup.py install
 
       - name: Run tests
         run: python test_eradicate.py
