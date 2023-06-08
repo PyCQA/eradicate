@@ -115,4 +115,8 @@ jobs:
           python setup.py install
 
       - name: Run tests
-        run: python test_eradicate.py
+        run: |
+          python test_eradicate.py
+          # Integration:
+          python -m eradicate setup.py
+          eradicate setup.py

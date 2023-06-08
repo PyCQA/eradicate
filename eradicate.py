@@ -298,5 +298,10 @@ def main(argv=sys.argv, standard_out=sys.stdout, standard_error=sys.stderr):
             except IOError as exception:
                 print('{}'.format(exception), file=standard_error)
                 change_or_error = True
+
     if change_or_error and args.error:
         return 1
+
+
+if __name__ == '__main__':
+    main()
