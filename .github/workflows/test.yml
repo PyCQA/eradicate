@@ -53,8 +53,8 @@ jobs:
 
       - name: Install project and deps
         run: |
-          python setup.py install
           pip install coverage
+          pip install .
 
       - name: Run test with coverage
         run: |
