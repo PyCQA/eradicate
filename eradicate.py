@@ -27,6 +27,7 @@ from __future__ import unicode_literals
 import difflib
 import io
 import os
+import sys
 import re
 import tokenize
 
