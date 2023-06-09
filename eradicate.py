@@ -37,7 +37,7 @@ except AttributeError:
     from lib2to3.pgen2 import tokenize as lib2to3_tokenize
     detect_encoding = lib2to3_tokenize.detect_encoding
 
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 class Eradicator(object):
