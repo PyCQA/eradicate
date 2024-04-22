@@ -77,3 +77,4 @@ Related
 There are different tools, plugins, and integrations for ``eradicate`` users:
 
 - `flake8-eradicate <https://github.com/sobolevn/flake8-eradicate>`_ - Flake8 plugin to find commented out or dead code.
+- `databricks-labs-pylint <https://github.com/databrickslabs/pylint-plugin#eradicate-checker>`_ - Databricks-specific PyLint plugin, that can also find commented out code.
