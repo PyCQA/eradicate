@@ -35,7 +35,6 @@ jobs:
 
       - name: Install project and deps
         run: |
-          pip install "mock; python_version>='2.7' and python_version<'2.8'"
           pip install .
 
       - name: Run tests

@@ -2,8 +2,6 @@
 
 """Setup for eradicate."""
 
-from __future__ import unicode_literals
-
 import ast
 from setuptools import setup
 
@@ -29,8 +27,8 @@ with open('README.rst') as readme:
         classifiers=['Environment :: Console',
                      'Intended Audience :: Developers',
                      'License :: OSI Approved :: MIT License',
-                     'Programming Language :: Python :: 2.7',
                      'Programming Language :: Python :: 3',
+                     'Programming Language :: Python :: 3 :: Only',
                      'Topic :: Software Development :: Quality Assurance'],
         keywords='clean, format, commented-out code',
         py_modules=['eradicate'],

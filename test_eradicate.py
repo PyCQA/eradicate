@@ -2,18 +2,13 @@
 
 """Test suite for eradicate."""
 
-from __future__ import unicode_literals
-
 import contextlib
 import io
 import subprocess
 import sys
 import tempfile
 import unittest
-try:  # pragma: no cover
-    import mock
-except ModuleNotFoundError:  # pragma: no cover
-    import unittest.mock as mock
+import unittest.mock as mock
 import re
 
 import eradicate
@@ -647,11 +642,11 @@ def temporary_directory(directory='.', prefix=''):
         shutil.rmtree(temp_directory)
 
 
-class StubFile(object):
+class StubFile:
 
     """Fake file that ignores everything."""
 
-    def write(*_):
+    def write(self, *_args):
         """Ignore."""
 
 
