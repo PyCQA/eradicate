@@ -21,9 +21,6 @@
 
 """Removes commented-out Python code."""
 
-from __future__ import print_function
-from __future__ import unicode_literals
-
 import difflib
 import io
 import os
@@ -31,16 +28,10 @@ import sys
 import re
 import tokenize
 
-try:
-    detect_encoding = tokenize.detect_encoding
-except AttributeError:
-    from lib2to3.pgen2 import tokenize as lib2to3_tokenize
-    detect_encoding = lib2to3_tokenize.detect_encoding
-
-__version__ = '2.3.0'
+__version__ = '3.0.0'
 
 
-class Eradicator(object):
+class Eradicator:
     """Eradicate comments."""
     BRACKET_REGEX = re.compile(r'^[()\[\]{}\s]+$')
     CODING_COMMENT_REGEX = re.compile(r'.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)')
@@ -226,7 +217,7 @@ class Eradicator(object):
 
     def open_with_encoding(self, filename, encoding, mode='r'):
         """Return opened file with a specific encoding."""
-        return io.open(filename, mode=mode, encoding=encoding,
+        return open(filename, mode=mode, encoding=encoding,
                        newline='')  # Preserve line endings
 
 
@@ -234,7 +225,7 @@ class Eradicator(object):
         """Return file encoding."""
         try:
             with open(filename, 'rb') as input_file:
-                encoding = detect_encoding(input_file.readline)[0]
+                encoding = tokenize.detect_encoding(input_file.readline)[0]
 
                 # Check for correctness of encoding.
                 with self.open_with_encoding(filename, encoding) as input_file:
@@ -300,7 +291,7 @@ def main(argv=sys.argv, standard_out=sys.stdout, standard_error=sys.stderr):
     while filenames:
         name = filenames.pop(0)
         if args.recursive and os.path.isdir(name):
-            for root, directories, children in os.walk('{}'.format(name)):
+            for root, directories, children in os.walk(f'{name}'):
                 filenames += [os.path.join(root, f) for f in children
                               if f.endswith('.py') and
                               not f.startswith('.')]
@@ -309,8 +300,8 @@ def main(argv=sys.argv, standard_out=sys.stdout, standard_error=sys.stderr):
         else:
             try:
                 change_or_error = eradicator.fix_file(name, args=args, standard_out=standard_out) or change_or_error
-            except IOError as exception:
-                print('{}'.format(exception), file=standard_error)
+            except OSError as exception:
+                print(f'{exception}', file=standard_error)
                 change_or_error = True
 
     if change_or_error and args.error:
