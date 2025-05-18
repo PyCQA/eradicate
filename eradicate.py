@@ -51,6 +51,7 @@ class Eradicator(object):
     PARTIAL_DICTIONARY_REGEX = re.compile(r'^\s*[\'"]\w+[\'"]\s*:.+[,{]\s*$')
     PRINT_RETURN_REGEX = re.compile(r'^(print|return)\b\s*')
     WITH_STATEMENT_REGEX = re.compile(r"with .+ as [a-zA-Z_][a-zA-Z0-9_]*:$")
+    INLINE_SCRIPT_METADATA = re.compile(r'(?m)^# /// (?P<type>[a-zA-Z0-9-]+)$\s(?P<content>(^#(| .*)$\s)+)^# ///$')
 
     CODE_INDICATORS = ['(', ')', '[', ']', '{', '}', ':', '=', '%',
                        'print', 'return', 'break', 'continue', 'import']
@@ -155,8 +156,20 @@ class Eradicator(object):
         return False
 
 
+    def inline_script_metadata_ranges(self, source):
+        """Return a list of ranges of lines of inline script metadata."""
+        return [
+            range(
+                source.count('\n', 0, match.start()),
+                source.count('\n', 0, match.end()) + 1,
+            )
+            for match in self.INLINE_SCRIPT_METADATA.finditer(source)
+        ]
+
+
     def commented_out_code_line_numbers(self, source, aggressive=True):
         """Yield line numbers of commented-out code."""
+        inline_script_metadata_ranges = self.inline_script_metadata_ranges(source)
         sio = io.StringIO(source)
         try:
             for token in tokenize.generate_tokens(sio.readline):
@@ -166,6 +179,7 @@ class Eradicator(object):
 
                 if (token_type == tokenize.COMMENT and
                         line.lstrip().startswith('#') and
+                        not any(start_row in r for r in inline_script_metadata_ranges) and
                         self.comment_contains_code(line, aggressive)):
                     yield start_row
         except (tokenize.TokenError, IndentationError):
