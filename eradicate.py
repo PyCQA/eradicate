@@ -28,7 +28,7 @@ import sys
 import re
 import tokenize
 
-__version__ = '3.0.0'
+__version__ = '3.0.1'
 
 
 class Eradicator:
