@@ -49,6 +49,7 @@ class Eradicator:
     CODE_KEYWORDS = [r'elif\s+.*', 'else', 'try', 'finally', r'except\s+.*']
     CODE_KEYWORDS_AGGR = CODE_KEYWORDS + [r'if\s+.*']
     WHITESPACE_HASH = ' \t\v\n#'
+    BRACKET_DELTA = {'(': 1, '[': 1, '{': 1, ')': -1, ']': -1, '}': -1}
 
     DEFAULT_WHITELIST = (
         r'pylint',
@@ -158,9 +159,71 @@ class Eradicator:
         ]
 
 
+    def bracket_delta(self, text):
+        """Return the net number of brackets opened by a code fragment."""
+        if not any(character in text for character in self.BRACKET_DELTA):
+            return 0
+
+        delta = 0
+        try:
+            for token in tokenize.generate_tokens(io.StringIO(text).readline):
+                if token[0] == tokenize.OP and token[1] in self.BRACKET_DELTA:
+                    delta += self.BRACKET_DELTA[token[1]]
+        except (tokenize.TokenError, IndentationError):
+            # Unbalanced/unterminated fragment: fall back to plain counting.
+            delta = sum(self.BRACKET_DELTA.get(character, 0)
+                        for character in text)
+        return delta
+
+    def protected_comment(self, text):
+        """Return True if the comment must never be treated as code."""
+        return bool(self.HASH_NUMBER.search(text) or
+                    self.WHITELIST_REGEX.search(text) or
+                    self.CODING_COMMENT_REGEX.match(text))
+
+    def multiline_code_line_numbers(self, comment_block):
+        """Yield line numbers of a commented-out multiline expression.
+
+        ``comment_block`` is a list of ``(line_number, text)`` pairs for a run
+        of consecutive comment lines, with the leading ``#`` already stripped.
+        Lines are grouped into bracket-balanced fragments; a fragment spanning
+        more than one line that compiles on its own is commented-out code even
+        though none of its lines compiles alone.
+        """
+        rows = []
+        fragment = []
+        depth = 0
+        for line_number, text in comment_block:
+            if self.protected_comment(text):
+                rows = []
+                fragment = []
+                depth = 0
+                continue
+
+            if not rows and self.bracket_delta(text) <= 0:
+                continue
+            rows.append(line_number)
+            fragment.append(text)
+            depth += self.bracket_delta(text)
+            if depth <= 0:
+                if len(rows) > 1:
+                    try:
+                        compile('\n'.join(fragment), '<string>', 'exec')
+                    except (SyntaxError, TypeError, ValueError,
+                            UnicodeDecodeError):
+                        pass
+                    else:
+                        for row in rows:
+                            yield row
+                rows = []
+                fragment = []
+                depth = 0
+
     def commented_out_code_line_numbers(self, source, aggressive=True):
         """Yield line numbers of commented-out code."""
         inline_script_metadata_ranges = self.inline_script_metadata_ranges(source)
+        marked = set()
+        comment_block = []
         sio = io.StringIO(source)
         try:
             for token in tokenize.generate_tokens(sio.readline):
@@ -168,13 +231,27 @@ class Eradicator:
                 start_row = token[2][0]
                 line = token[4]
 
-                if (token_type == tokenize.COMMENT and
+                if not (token_type == tokenize.COMMENT and
                         line.lstrip().startswith('#') and
-                        not any(start_row in r for r in inline_script_metadata_ranges) and
-                        self.comment_contains_code(line, aggressive)):
-                    yield start_row
+                        not any(start_row in r
+                                for r in inline_script_metadata_ranges)):
+                    continue
+
+                if comment_block and start_row != comment_block[-1][0] + 1:
+                    marked.update(self.multiline_code_line_numbers(comment_block))
+                    comment_block = []
+                comment_block.append(
+                    (start_row, line.lstrip().lstrip(self.WHITESPACE_HASH)))
+
+                if self.comment_contains_code(line, aggressive):
+                    marked.add(start_row)
         except (tokenize.TokenError, IndentationError):
             pass
+
+        marked.update(self.multiline_code_line_numbers(comment_block))
+
+        for start_row in sorted(marked):
+            yield start_row
 
 
     def filter_commented_out_code(self, source, aggressive=True):
